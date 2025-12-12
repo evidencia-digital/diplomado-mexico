@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ley Federal de Protección de Datos Personales</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 600px;
+        }
+
+        .chapter {
+            display: none;
+        }
+
+        .chapter.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chapter-title {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #764ba2;
+            border-radius: 8px;
+        }
+
+        .section-title {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+            font-weight: 600;
+        }
+
+        .definition {
+            background: #e7f3ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #0066cc;
+        }
+
+        .definition-term {
+            font-weight: 700;
+            color: #0066cc;
+        }
+
+        .list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+
+        .summary-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .key-point {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #ff6b6b;
+            font-weight: 600;
+            color: #d63031;
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .principle-card {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .principle-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .rights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .right-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 2px solid #e9ecef;
+        }
+
+        @media (max-width: 768px) {
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .principles-grid,
+            .rights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Ley Federal de Protección de Datos Personales</h1>
+            <p>En Posesión de los Particulares - Ley DOF 05-07-2010</p>
+        </header>
+
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="showChapter(0)">📊 Resumen General</button>
+            <button class="nav-btn" onclick="showChapter(1)">Capítulo I: Disposiciones Generales</button>
+            <button class="nav-btn" onclick="showChapter(2)">Capítulo II: Principios</button>
+            <button class="nav-btn" onclick="showChapter(3)">Capítulo III: Derechos</button>
+            <button class="nav-btn" onclick="showChapter(4)">Capítulo IV: Ejercicio de Derechos</button>
+            <button class="nav-btn" onclick="showChapter(5)">Capítulo V: Transferencias</button>
+            <button class="nav-btn" onclick="showChapter(6)">Capítulo VI-IX: Autoridades y Procedimientos</button>
+            <button class="nav-btn" onclick="showChapter(7)">Capítulo X-XI: Infracciones y Delitos</button>
+        </div>
+
+        <div class="content">
+            <!-- RESUMEN GENERAL -->
+            <div id="chapter0" class="chapter active">
+                <h2 class="chapter-title">📊 Resumen General: Protección de Datos Personales</h2>
+
+                <div class="section">
+                    <h3 class="section-title">Infografía de Protección de Datos</h3>
+                    <div style="text-align: center; margin: 30px 0;">
+                        <img src="./proteccion_de_datos.png" alt="Protección de Datos Personales - Resumen General" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">🎯 Visión General</h3>
+                    <div class="highlight">
+                        Esta infografía resume los pilares fundamentales de la Ley Federal de Protección de Datos Personales: Los derechos que tienes como ciudadano, los 8 principios que deben seguir las empresas, y qué sucede si no cumplen.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">👤 Tus Derechos ARCO</h3>
+                    <p>Como titular de datos personales, tienes 4 derechos fundamentales:</p>
+                    <div class="rights-grid">
+                        <div class="right-item">🔍 Acceso</div>
+                        <div class="right-item">✏️ Rectificación</div>
+                        <div class="right-item">🗑️ Cancelación</div>
+                        <div class="right-item">🚫 Oposición</div>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.95em;">Estos derechos se pueden ejercer en cualquier momento, sin costo, directamente con las empresas o ante el Instituto Federal de Protección de Datos.</p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">⚖️ 8 Principios que Rigen el Tratamiento</h3>
+                    <p>Toda empresa que maneja tus datos DEBE cumplir con:</p>
+                    <ul class="list">
+                        <li><strong>Licitud:</strong> Obtener datos de forma legal</li>
+                        <li><strong>Consentimiento:</strong> Pedir tu aprobación</li>
+                        <li><strong>Información:</strong> Informarte qué recopilan y por qué</li>
+                        <li><strong>Calidad:</strong> Mantener datos correctos y actualizados</li>
+                        <li><strong>Finalidad:</strong> Usar datos solo para lo acordado</li>
+                        <li><strong>Lealtad:</strong> Tratar tus datos con honestidad</li>
+                        <li><strong>Proporcionalidad:</strong> Recopilar solo lo necesario</li>
+                        <li><strong>Responsabilidad:</strong> Demostrar cumplimiento</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">🔐 Datos Sensibles - Mayor Protección</h3>
+                    <p>Algunos datos requieren especial protección:</p>
+                    <ul class="list">
+                        <li>Origen racial o étnico</li>
+                        <li>Estado de salud (presente y futuro)</li>
+                        <li>Información genética</li>
+                        <li>Creencias religiosas o filosóficas</li>
+                        <li>Opiniones políticas</li>
+                        <li>Afiliación sindical</li>
+                        <li>Preferencias sexuales</li>
+                    </ul>
+                    <div class="key-point">Para datos sensibles se requiere consentimiento EXPRESO Y POR ESCRITO</div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">⚠️ ¿Qué Pasa si No Cumplen?</h3>
+                    <div class="highlight" style="background: #ffe6e6; border-left-color: #ff4444;">
+                        <strong style="color: #cc0000;">Sanciones Administrativas:</strong> Multas de 100 a 320,000 días de Salario Mínimo
+                    </div>
+                    <div class="key-point" style="background: #ffe6e6; border-left-color: #ff4444;">
+                        <strong>Delitos Penales:</strong> Hasta 5 años de prisión por vulneración de seguridad o engaño (penas se duplican para datos sensibles)
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">📞 ¿A Quién Recurrir?</h3>
+                    <ul class="list">
+                        <li><strong>Primero:</strong> Solicitar acceso/rectificación/cancelación/oposición directamente a la empresa (20 días máximo para responder)</li>
+                        <li><strong>Si no responde o rechaza:</strong> Presentar "Solicitud de Protección de Datos" ante el Instituto Federal (15 días después de respuesta)</li>
+                        <li><strong>Instituto resuelve en:</strong> Máximo 50 días (ampliable una sola vez)</li>
+                    </ul>
+                </div>
+
+                <div class="summary-box">
+                    <h4>📌 Lo Más Importante</h4>
+                    <p><strong>Tú tienes derechos.</strong> Las empresas tienen 8 principios que cumplir. Tu consentimiento es esencial. Los datos sensibles tienen protección especial. Si algo no funciona, tienes un Instituto que te respalda. La privacidad es un derecho fundamental que México protege por ley.</p>
+                </div>
+            </div>
+
+            <!-- CAPÍTULO I -->
+            <div id="chapter1" class="chapter">
+                <h2 class="chapter-title">Capítulo I: Disposiciones Generales</h2>
+
+                <div class="section">
+                    <h3 class="section-title">🎯 Objetivo de la Ley</h3>
+                    <div class="highlight">
+                        Proteger los datos personales en posesión de particulares, regulando su tratamiento legítimo, controlado e informado, para garantizar la privacidad y el derecho a la autodeterminación informativa.
+                    </div>
+                    <p>Esta ley es de orden público y de observancia general en toda la República Mexicana.</p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">👥 Sujetos Regulados</h3>
+                    <ul class="list">
+                        <li><strong>Particulares:</strong> Personas físicas o morales de carácter privado que traten datos personales</li>
+                    </ul>
+                    <div class="key-point">Excepciones: Sociedades de información crediticia y personas que recopilen datos solo para uso personal sin fines comerciales</div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">📚 Conceptos Clave</h3>
+                    
+                    <div class="definition">
+                        <span class="definition-term">Datos Personales:</span> Cualquier información concerniente a una persona física identificada o identificable
+                    </div>
+
+                    <div class="definition">
+                        <span class="definition-term">Datos Sensibles:</span> Información que afecta la esfera más íntima del titular. Incluye: origen racial, estado de salud, información genética, creencias religiosas, afiliación sindical, opiniones políticas, preferencia sexual
+                    </div>
+
+                    <div class="definition">
+                        <span class="definition-term">Responsable:</span> Persona física o moral que decide sobre el tratamiento de datos personales
+                    </div>
+
+                    <div class="definition">
+                        <span class="definition-term">Encargado:</span> Persona que trata datos por cuenta del responsable
+                    </div>
+
+                    <div class="definition">
+                        <span class="definition-term">Consentimiento:</span> Manifestación de voluntad del titular para el tratamiento de sus datos
+                    </div>
+
+                    <div class="definition">
+                        <span class="definition-term">Aviso de Privacidad:</span> Documento que el responsable debe poner a disposición del titular, previo al tratamiento de datos
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h4>📌 Resumen del Capítulo I</h4>
+                    <p>Este capítulo establece el marco legal y define los conceptos fundamentales. La ley protege a personas físicas, no a particulares sin actividad comercial. Todos los responsables deben proporcionar un aviso de privacidad antes de recopilar datos.</p>
+                </div>
+            </div>
+
+            <!-- CAPÍTULO II -->
+            <div id="chapter2" class="chapter">
+                <h2 class="chapter-title">Capítulo II: Principios de Protección de Datos</h2>
+
+                <div class="section">
+                    <h3 class="section-title">⚖️ 8 Principios Fundamentales</h3>
+                    <div class="principles-grid">
+                        <div class="principle-card">
+                            <h4>Licitud</h4>
+                            <p>Datos recabados de manera legítima</p>
+                        </div>
+                        <div class="principle-card">
+                            <h4>Consentimiento</h4>
+                            <p>Voluntad del titular para el tratamiento</p>
+                        </div>
+                        <div class="principle-card">
+                            <h4>Información</h4>
+                            <p>Transparencia sobre finalidades</p>
+                        </div>
+                        <div class="principle-card">
+                            <h4>Calidad</h4>
+                            <p>Datos pertinentes y actualizados</p>
+                        </div>
+                        <div class="principle-card">
+                            <h4>Finalidad</h4>
+                            <p>Uso limitado a fines especificados</p>
+                        </div>
+                        <div class="principle-card">
+                            <h4>Lealtad</h4>
+                            <p>Trato justo y honesto</p>
+                        </div>
+                        <div class="principle-card">
+                            <h4>Proporcionalidad</h4>
+                            <p>Datos necesarios y relevantes</p>
+                        </div>
+                        <div class="principle-card">
+                            <h4>Responsabilidad</h4>
+                            <p>Cumplimiento demostrable de obligaciones</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">✅ Consentimiento</h3>
+                    <ul class="list">
+                        <li><strong>Expreso:</strong> Verbal, escrito, electrónico o por signos inequívocos</li>
+                        <li><strong>Tácito:</strong> Cuando el titular no se opone tras conocer el aviso de privacidad</li>
+                    </ul>
+                    <div class="key-point">Datos financieros o patrimoniales REQUIEREN consentimiento EXPRESO</div>
+                    <div class="key-point">Datos sensibles REQUIEREN consentimiento EXPRESO Y POR ESCRITO</div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">❌ Casos sin Consentimiento</h3>
+                    <ul class="list">
+                        <li>Cuando esté previsto en una ley</li>
+                        <li>Datos en fuentes de acceso público</li>
+                        <li>Datos anónimos (disociados)</li>
+                        <li>Cumplimiento de obligaciones contractuales</li>
+                        <li>Situaciones de emergencia que dañen a un individuo</li>
+                        <li>Atención médica y servicios sanitarios</li>
+                        <li>Resolución de autoridad competente</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">🔒 Seguridad de Datos</h3>
+                    <div class="highlight">
+                        Todo responsable debe establecer medidas de seguridad administrativas, técnicas y físicas que protejan los datos contra: daño, pérdida, alteración, destrucción o uso no autorizado
+                    </div>
+                    <ul class="list">
+                        <li>No pueden adoptar medidas menores a las que usan para su propia información</li>
+                        <li>Se considera el riesgo existente y consecuencias para titulares</li>
+                        <li>Se valora la sensibilidad de los datos</li>
+                        <li>Se toma en cuenta el desarrollo tecnológico</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">🔐 Confidencialidad</h3>
+                    <div class="highlight">
+                        Responsable y terceros que intervengan en cualquier fase del tratamiento DEBEN guardar confidencialidad. Esta obligación subsiste incluso después de finalizar relaciones.
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h4>📌 Resumen del Capítulo II</h4>
+                    <p>Los 8 principios son la base de toda protección. El consentimiento es obligatorio salvo excepciones legales. Los datos sensibles requieren máxima protección. Todas las organizaciones deben implementar medidas de seguridad proporcionales al riesgo y mantener confidencialidad permanente.</p>
+                </div>
+            </div>
+
+            <!-- CAPÍTULO III -->
+            <div id="chapter3" class="chapter">
+                <h2 class="chapter-title">Capítulo III: Derechos de los Titulares</h2>
+
+                <div class="section">
+                    <h3 class="section-title">⚡ 4 Derechos Principales</h3>
+                    <div class="rights-grid">
+                        <div class="right-item">Acceso</div>
+                        <div class="right-item">Rectificación</div>
+                        <div class="right-item">Cancelación</div>
+                        <div class="right-item">Oposición</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">1️⃣ Derecho de Acceso</h3>
+                    <div class="highlight">
+                        Acceder a datos personales en poder del responsable y conocer el Aviso de Privacidad
+                    </div>
+                    <ul class="list">
+                        <li>Se puede ejercer en cualquier momento</li>
+                        <li>Es gratuito</li>
+                        <li>Solo cubre gastos de envío o reproducción si se solicita copia</li>
+                        <li>Entrega en formato determinado por el responsable</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">2️⃣ Derecho de Rectificación</h3>
+                    <div class="highlight">
+                        Corregir datos personales cuando sean inexactos o incompletos
+                    </div>
+                    <ul class="list">
+                        <li>El titular debe indicar qué se modifica</li>
+                        <li>Aportar documentación que sustente la corrección</li>
+                        <li>El responsable debe notificar a terceros que ya recibieron los datos</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">3️⃣ Derecho de Cancelación</h3>
+                    <div class="highlight">
+                        Solicitar eliminación de datos personales en todo momento
+                    </div>
+                    <ul class="list">
+                        <li>Genera período de "bloqueo" antes de la supresión</li>
+                        <li>Duración: Período de prescripción de acciones derivadas de la relación jurídica</li>
+                        <li>Durante bloqueo: datos no pueden ser tratados</li>
+                        <li>Finalizado bloqueo: se procede a cancelación definitiva</li>
+                        <li>Responsable debe notificar a terceros receptores</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">🛑 Límites a la Cancelación</h3>
+                    <p>El responsable NO está obligado a cancelar cuando:</p>
+                    <ul class="list">
+                        <li>Datos son parte necesaria de un contrato en vigencia</li>
+                        <li>Debe retener por disposición legal</li>
+                        <li>Obstaculizaría actuaciones judiciales o fiscales</li>
+                        <li>Son necesarios para proteger derechos del titular</li>
+                        <li>Sirven interés público</li>
+                        <li>Cumplen obligación legalmente adquirida por el titular</li>
+                        <li>Atención médica o diagnóstico por profesional de salud</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">4️⃣ Derecho de Oposición</h3>
+                    <div class="highlight">
+                        En todo momento y por causa legítima, oponerse al tratamiento de datos. Si es procedente, responsable NO puede seguir tratando los datos.
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h4>📌 Resumen del Capítulo III</h4>
+                    <p>Los titulares tienen 4 derechos fundamentales: ver qué datos se tienen, corregir errores, pedir que se eliminen, y oponerse al uso. Estos derechos se pueden ejercer en cualquier momento sin requisitos previos entre ellos. Sin embargo, hay excepciones legales importantes para cancelación.</p>
+                </div>
+            </div>
+
+            <!-- CAPÍTULO IV -->
+            <div id="chapter4" class="chapter">
+                <h2 class="chapter-title">Capítulo IV: Ejercicio de Derechos</h2>
+
+                <div class="section">
+                    <h3 class="section-title">📝 Cómo Solicitar (Artículos 28-35)</h3>
+                    <div class="highlight">
+                        Cualquier titular o su representante legal puede solicitar acceso, rectificación, cancelación u oposición en cualquier momento
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">📋 Requisitos de la Solicitud</h3>
+                    <p>La solicitud debe incluir:</p>
+                    <ul class="list">
+                        <li>Nombre del titular y domicilio o medio para respuesta</li>
+                        <li>Documentos que acrediten identidad o representación legal</li>
+                        <li>Descripción clara y precisa de los datos a modificar</li>
+                        <li>Otros elementos que faciliten localización de datos</li>
+                        <li>Para rectificación: indicar modificaciones y documentación de apoyo</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">⏱️ Plazos de Respuesta</h3>
+                    <div class="highlight">
+                        El responsable tiene máximo 20 días para responder desde recepción de solicitud
+                    </div>
+                    <ul class="list">
+                        <li>Si es favorable: se hace efectiva en máximo 15 días posteriores</li>
+                        <li>Plazo puede ampliarse UNA SOLA VEZ por período igual si hay circunstancias justificadas</li>
+                        <li>Para acceso: entrega previa acreditación de identidad</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">🏢 Departamento de Datos Personales</h3>
+                    <div class="highlight">
+                        Todo responsable DEBE designar una persona o departamento de datos personales para tramitar solicitudes y fomentar la protección en la organización
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">❌ Motivos para Denegar Solicitud</h3>
+                    <p>El responsable puede negar si:</p>
+                    <ul class="list">
+                        <li>Solicitante no es el titular ni representa legalmente</li>
+                        <li>Los datos no existen en la base de datos</li>
+                        <li>Se lesionarían derechos de terceros</li>
+                        <li>Existe impedimento legal o resolución de autoridad</li>
+                        <li>La rectificación/cancelación/oposición ya se realizó</li>
+                    </ul>
+                    <div class="key-point">Negativa puede ser parcial (atender parte de la solicitud)</div>
+                    <div class="key-point">Responsable DEBE informar motivo de negativa con pruebas pertinentes</div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">💰 Costos</h3>
+                    <div class="highlight">
+                        GRATUITO el ejercicio del derecho. Solo se cobran gastos de envío o reproducción en otros formatos
+                    </div>
+                    <ul class="list">
+                        <li>Si el titular reitera solicitud en menos de 12 meses: máximo 3 días de Salario Mínimo</li>
+                        <li>Excepción: si hay modificaciones sustanciales al aviso de privacidad</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">🛡️ Protección ante Incumplimiento</h3>
+                    <div class="highlight">
+                        El titular puede presentar solicitud de protección de datos ante el Instituto por respuesta insuficiente o falta de respuesta del responsable
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h4>📌 Resumen del Capítulo IV</h4>
+                    <p>El proceso para ejercer derechos es directo: enviar solicitud con datos básicos al responsable, quien tiene 20 días para responder. Si es favorable, implementa en 15 días. Cero costos legales. Si el responsable incumple, el titular puede recurrir ante el Instituto Federal.</p>
+                </div>
+            </div>
+
+            <!-- CAPÍTULO V -->
+            <div id="chapter5" class="chapter">
+                <h2 class="chapter-title">Capítulo V: Transferencia de Datos</h2>
+
+                <div class="section">
+                    <h3 class="section-title">🔄 Definición</h3>
+                    <div class="highlight">
+                        Transferencia = Comunicación de datos a TERCEROS (personas distintas del responsable o encargado)
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">⚠️ Requisitos Generales</h3>
+                    <ul class="list">
+                        <li>Comunicar al tercero el Aviso de Privacidad</li>
+                        <li>Informar al tercero las finalidades del tratamiento</li>
+                        <li>Aviso debe contener cláusula sobre aceptación/rechazo de transferencia</li>
+                        <li><strong>Tercero asume las mismas obligaciones que el responsable original</strong></li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">✅ Transferencias SIN Consentimiento</h3>
+                    <p>Se permiten cuando:</p>
+                    <ul class="list">
+                        <li>Está prevista en Ley o Tratado internacional</li>
+                        <li>Necesaria para prevención, diagnóstico o atención médica</li>
+                        <li>A sociedades controladoras, subsidiarias, afiliadas bajo control común</li>
+                        <li>Necesaria por contrato en interés del titular</li>
+                        <li>Legalmente exigida para salvaguarda de interés público o administración de justicia</li>
+                        <li>Necesaria para defensa de derechos en proceso judicial</li>
+                        <li>Necesaria para mantener relación jurídica con titular</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">🌍 Transferencias Internacionales</h3>
+                    <div class="highlight">
+                        Pueden realizarse a países extranjeros bajo las mismas reglas que transferencias nacionales
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h4>📌 Resumen del Capítulo V</h4>
+                    <p>La transferencia de datos a terceros (nacionales o extranjeros) requiere informar del aviso de privacidad. El titular debe poder aceptar o rechazar. Hay 7 excepciones donde la transferencia es permitida sin consentimiento. En todos los casos, el tercero receptor adquiere las mismas obligaciones de protección.</p>
+                </div>
+            </div>
+
+            <!-- CAPÍTULOS VI-IX -->
+            <div id="chapter6" class="chapter">
+                <h2 class="chapter-title">Capítulos VI-IX: Autoridades y Procedimientos</h2>
+
+                <div class="section">
+                    <h3 class="section-title">🏛️ Instituto Federal de Acceso a la Información y Protección de Datos</h3>
+                    <div class="highlight">
+                        Organismo responsable de vigilar cumplimiento de la Ley
+                    </div>
+                    <ul class="list">
+                        <li>Difunde conocimiento del derecho a protección</li>
+                        <li>Vigila cumplimiento de disposiciones</li>
+                        <li>Interpreta administrativamente la Ley</li>
+                        <li>Proporciona apoyo técnico a responsables</li>
+                        <li>Emite criterios y recomendaciones</li>
+                        <li>Divulga estándares de seguridad internacionales</li>
+                        <li>Resuelve procedimientos de protección de derechos</li>
+                        <li>Impone sanciones</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">📊 Secretaría de Economía</h3>
+                    <p>Para bases de datos de comercio (automatizadas):</p>
+                    <ul class="list">
+                        <li>Difunde obligaciones en iniciativa privada</li>
+                        <li>Promueve buenas prácticas comerciales</li>
+                        <li>Emite lineamientos para avisos de privacidad</li>
+                        <li>Regula mecanismos de autorregulación</li>
+                        <li>Lleva registro de consumidores</li>
+                        <li>Celebra convenios con cámaras y asociaciones</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">⚖️ Procedimiento de Protección de Derechos (Capítulo VII)</h3>
+                    <div class="highlight">
+                        Se inicia a instancia del titular ante el Instituto cuando el responsable incumple
+                    </div>
+                    <ul class="list">
+                        <li><strong>Plazo:</strong> 15 días hábiles después que responsable comunique respuesta</li>
+                        <li><strong>O:</strong> Después de vencido plazo de respuesta si responsable no contestó</li>
+                        <li><strong>Resolución:</strong> Máximo 50 días (ampliable 1 sola vez)</li>
+                        <li><strong>Cumplimiento:</strong> Responsable tiene 10 días para ejecutar resolución favorable</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">🔍 Procedimiento de Verificación (Capítulo VIII)</h3>
+                    <ul class="list">
+                        <li>Instituto verifica cumplimiento de la Ley</li>
+                        <li>Puede iniciarse de oficio o por petición de parte</li>
+                        <li>Instituto tiene acceso a información necesaria</li>
+                        <li>Servidores públicos guardan confidencialidad</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">⚠️ Procedimiento de Sanciones (Capítulo IX)</h3>
+                    <p>Se inicia cuando Instituto descubre incumplimiento de principios:</p>
+                    <ul class="list">
+                        <li>Instituto notifica presunto infractor</li>
+                        <li>Infractor tiene 15 días para presentar pruebas y alegatos</li>
+                        <li>Instituto resuelve en máximo 50 días</li>
+                        <li>Resolución debe ser fundada y motivada</li>
+                    </ul>
+                </div>
+
+                <div class="summary-box">
+                    <h4>📌 Resumen de Capítulos VI-IX</h4>
+                    <p>El Instituto es la autoridad ejecutora. Los titulares pueden recurrir ante él en máximo 15 días. El Instituto resuelve en 50 días. Puede verificar cumplimiento de oficio. Las sanciones se imponen tras debido procedimiento.</p>
+                </div>
+            </div>
+
+            <!-- CAPÍTULOS X-XI -->
+            <div id="chapter7" class="chapter">
+                <h2 class="chapter-title">Capítulos X-XI: Infracciones, Sanciones y Delitos</h2>
+
+                <div class="section">
+                    <h3 class="section-title">🚫 Infracciones Administrativas</h3>
+                    <p>Constituye infracción cuando el responsable:</p>
+                    <ul class="list">
+                        <li>No cumple solicitud de acceso, rectificación, cancelación u oposición sin razón fundada</li>
+                        <li>Actúa con negligencia o dolo en tramitación de solicitudes</li>
+                        <li>Declara falsamente que no existen datos que sí tiene</li>
+                        <li>Da tratamiento contrario a principios de la Ley</li>
+                        <li>Omite elementos requeridos en aviso de privacidad</li>
+                        <li>Mantiene datos inexactos o no efectúa rectificaciones legales</li>
+                        <li>No cumple apercibimiento</li>
+                        <li>Incumple deber de confidencialidad</li>
+                        <li>Cambia sustancialmente finalidad del tratamiento sin consentimiento</li>
+                        <li>Transfiere datos sin comunicar aviso de privacidad</li>
+                        <li>Vulnera seguridad de bases de datos</li>
+                        <li>Transfiere datos fuera de casos permitidos</li>
+                        <li>Recaba datos sin consentimiento expreso cuando se requiere</li>
+                        <li>Obstruye actos de verificación de autoridad</li>
+                        <li>Recaba datos engañosamente</li>
+                        <li>Continúa uso ilegítimo tras solicitud de cese</li>
+                        <li>Trata datos de manera que impide ejercicio de derechos</li>
+                        <li>Crea bases de datos con datos sensibles sin justificación</li>
+                        <li>Cualquier incumplimiento de obligaciones de esta Ley</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">💰 Sanciones Administrativas</h3>
+                    <div class="highlight">
+                        El Instituto puede imponer:</div>
+                    <ul class="list">
+                        <li><strong>Apercibimiento:</strong> Cumplir lo solicitado</li>
+                        <li><strong>Multa I:</strong> 100 a 160,000 días de Salario Mínimo (infracciones leves)</li>
+                        <li><strong>Multa II:</strong> 200 a 320,000 días de Salario Mínimo (infracciones graves)</li>
+                        <li><strong>Multa por Reincidencia:</strong> 100 a 320,000 días de Salario Mínimo</li>
+                    </ul>
+                    <div class="key-point">Para datos SENSIBLES: las sanciones pueden aumentarse HASTA 2 VECES</div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">⚖️ Criterios de Sanción</h3>
+                    <p>El Instituto considera:</p>
+                    <ul class="list">
+                        <li>Naturaleza del dato afectado</li>
+                        <li>Notoria improcedencia de la negativa</li>
+                        <li>Carácter intencional o negligencia</li>
+                        <li>Capacidad económica del responsable</li>
+                        <li>Reincidencia</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">⚖️ Delitos Penales (Capítulo XI)</h3>
+                    <div class="key-point">Prisión 3 meses a 3 años: Autorizado en tratamiento de datos que provoque vulneración de seguridad a bases de datos con ánimo de lucro</div>
+                    <div class="key-point">Prisión 6 meses a 5 años: Trata datos mediante engaño aprovechando error del titular con fin de lucro indebido</div>
+                    <div class="key-point">Datos SENSIBLES: Penas se DUPLICAN</div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">📋 Responsabilidad Civil</h3>
+                    <div class="highlight">
+                        Las sanciones administrativas son SIN PERJUICIO de responsabilidad civil o penal que corresponda
+                    </div>
+                    <p>Titulares pueden ejercer derechos de indemnización según leyes aplicables</p>
+                </div>
+
+                <div class="summary-box">
+                    <h4>📌 Resumen de Capítulos X-XI</h4>
+                    <p>La Ley establece 19 infracciones administrativas. Las multas van de 100 a 320,000 días de Salario Mínimo (incrementables para datos sensibles). Hay 2 delitos penales graves: vulneración de seguridad y engaño. Las sanciones administrativas no excluyen responsabilidad civil.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Ley Federal de Protección de Datos Personales en Posesión de los Particulares - Publicada en DOF 05-07-2010</p>
+            <p>Infografía interactiva | Última actualización: 2025</p>
+        </div>
+    </div>
+
+    <script>
+        function showChapter(chapterNum) {
+            // Ocultar todos los capítulos
+            const chapters = document.querySelectorAll('.chapter');
+            chapters.forEach(chapter => {
+                chapter.classList.remove('active');
+            });
+
+            // Ocultar todos los botones active
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Mostrar capítulo seleccionado
+            document.getElementById('chapter' + chapterNum).classList.add('active');
+
+            // Activar botón correspondiente
+            if (chapterNum === 0) {
+                buttons[0].classList.add('active');
+            } else {
+                buttons[chapterNum].classList.add('active');
+            }
+
+            // Scroll al top
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+    </script>
+</body>
+</html>

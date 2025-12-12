@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Legislación - México y Colombia</title>
+    <style>
+        :root {
+            --color-primary: #017E44;
+            --color-secondary: #FFF95B;
+            --color-surface: #F5F5F5;
+            --color-text: #1a1a1a;
+            --color-text-light: #ffffff;
+            --color-text-secondary: #4a5568;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #017E44;
+            background: linear-gradient(15deg, rgba(1, 126, 68, 1) 0%, rgba(255, 249, 91, 1) 100%);
+            min-height: 100vh;
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header con escudos */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .escudo {
+            position: fixed;
+            width: 180px;
+            height: auto;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+            transition: transform 0.3s ease;
+            z-index: 100;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .escudo:hover {
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .escudo-colombia {
+            left: 20px;
+        }
+
+        .escudo-mexico {
+            right: 20px;
+        }
+
+        .header-content {
+            text-align: center;
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .header-content h1 {
+            color: var(--color-primary);
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content .subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .flags {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .flag {
+            font-size: 1.8em;
+        }
+
+        /* Navegación principal */
+        .nav-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-title {
+            color: var(--color-primary);
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 3px solid var(--color-primary);
+            padding-bottom: 15px;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* Cards de navegación */
+        .nav-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            padding: 25px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 180px;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(1, 126, 68, 0.2);
+            border-color: var(--color-primary);
+        }
+
+        .nav-card-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .nav-card-title {
+            color: var(--color-primary);
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .nav-card-description {
+            color: var(--color-text-secondary);
+            font-size: 0.95em;
+            flex-grow: 1;
+        }
+
+        .nav-card-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, var(--color-primary), #02a858);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-top: 15px;
+            align-self: flex-start;
+        }
+
+        .nav-card-tag.colombia {
+            background: linear-gradient(135deg, #FCD116, #e6be14);
+            color: #1a1a1a;
+        }
+
+        .nav-card-tag.mexico {
+            background: linear-gradient(135deg, #006847, #008f5f);
+        }
+
+        .nav-card-tag.pdf {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        /* Sección Hoja de Vida */
+        .profile-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary), #02a858);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: white;
+            box-shadow: 0 8px 25px rgba(1, 126, 68, 0.3);
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .profile-name {
+            font-size: 1.8em;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+        }
+
+        .profile-rank {
+            font-size: 1.1em;
+            color: var(--color-text-secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-rank-badge {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1a1a1a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .profile-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .profile-detail-icon {
+            font-size: 1.3em;
+        }
+
+        .profile-detail-label {
+            font-size: 0.8em;
+            color: var(--color-text-secondary);
+        }
+
+        .profile-detail-value {
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        /* Rangos de Policía */
+        .ranks-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .ranks-title {
+            color: var(--color-primary);
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ranks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+        }
+
+        .rank-card {
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .rank-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .rank-card.current {
+            border-color: var(--color-primary);
+            background: linear-gradient(145deg, rgba(1, 126, 68, 0.1), #ffffff);
+        }
+
+        .rank-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .rank-name {
+            font-weight: 600;
+            color: var(--color-text);
+            font-size: 0.85em;
+        }
+
+        .rank-category {
+            font-size: 0.7em;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Timeline */
+        .timeline-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .timeline-title {
+            color: var(--color-primary);
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-date {
+            font-size: 0.85em;
+            color: var(--color-primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-event {
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 5px;
+        }
+
+        .timeline-description {
+            font-size: 0.9em;
+            color: var(--color-text-secondary);
+        }
+
+        /* Habilidades y competencias */
+        .skills-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .skills-title {
+            color: var(--color-primary);
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-category {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .skill-category-title {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .skill-item:last-child {
+            border-bottom: none;
+        }
+
+        .skill-icon {
+            font-size: 1.1em;
+        }
+
+        .skill-name {
+            flex: 1;
+            font-size: 0.9em;
+        }
+
+        .skill-level {
+            display: flex;
+            gap: 3px;
+        }
+
+        .skill-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e9ecef;
+        }
+
+        .skill-dot.filled {
+            background: var(--color-primary);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 30px;
+        }
+
+        footer p {
+            font-size: 0.95em;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 20px;
+            }
+
+            .escudo {
+                width: 80px;
+            }
+
+            .escudo-colombia {
+                left: 5px;
+            }
+
+            .escudo-mexico {
+                right: 5px;
+            }
+
+            .header-content h1 {
+                font-size: 1.6em;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-card {
+                min-height: auto;
+            }
+
+            .container {
+                padding: 20px 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .escudo {
+                width: 60px;
+            }
+
+            .container {
+                padding: 15px 50px;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-card {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .nav-card:nth-child(1) { animation-delay: 0.1s; }
+        .nav-card:nth-child(2) { animation-delay: 0.2s; }
+        .nav-card:nth-child(3) { animation-delay: 0.3s; }
+        .nav-card:nth-child(4) { animation-delay: 0.4s; }
+        .nav-card:nth-child(5) { animation-delay: 0.5s; }
+
+        /* Efectos adicionales */
+        .glow-effect {
+            position: relative;
+        }
+
+        .glow-effect::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(1, 126, 68, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Escudos fijos a los lados -->
+    <img src="Escudo_Policía_Nacional_de_Colombia.jpg" alt="Escudo Policía Nacional de Colombia" class="escudo escudo-colombia">
+    <img src="Escudo_Policía_Federal_2019.png" alt="Escudo Policía Federal México" class="escudo escudo-mexico">
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>📚 Portal de Legislación</h1>
+                <p class="subtitle">Comparativa de Marco Jurídico México - Colombia</p>
+                <div class="flags">
+                    <span class="flag">🇨🇴</span>
+                    <span class="flag">🇲🇽</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sección de Infografías Interactivas -->
+        <section class="nav-section glow-effect">
+            <h2 class="nav-title">
+                <span>📊</span>
+                Infografías Interactivas
+            </h2>
+            
+            <div class="nav-grid">
+                <!-- Ley Olimpia -->
+                <a href="1 LEY OLIMPIA  Y COLOMBIANAS/Infografia/Ley Olimpia - Comparativa México Colombia.html" class="nav-card">
+                    <span class="nav-card-icon">⚖️</span>
+                    <h3 class="nav-card-title">Ley Olimpia</h3>
+                    <p class="nav-card-description">
+                        Comparativa del marco legal para la protección contra la violencia digital y la difusión de contenido íntimo sin consentimiento en México y Colombia.
+                    </p>
+                    <span class="nav-card-tag">México 🇲🇽 - Colombia 🇨🇴</span>
+                </a>
+
+                <!-- Ley Federal de Protección de Datos -->
+                <a href="3 LEY FEDERAL DE PROTECCION DATOS PERSONALES/Infografia/ley_federal_proteccion_de_datos.html" class="nav-card">
+                    <span class="nav-card-icon">🔐</span>
+                    <h3 class="nav-card-title">Protección de Datos Personales</h3>
+                    <p class="nav-card-description">
+                        Ley Federal de Protección de Datos Personales en Posesión de Particulares. Derechos ARCO, obligaciones y sanciones.
+                    </p>
+                    <span class="nav-card-tag mexico">México 🇲🇽</span>
+                </a>
+
+                <!-- Código Penal Federal -->
+                <a href="4 CODIGO PENAL FEDERAL/Infografia/Codigo_Penal_Federal.html" class="nav-card">
+                    <span class="nav-card-icon">📜</span>
+                    <h3 class="nav-card-title">Código Penal Federal</h3>
+                    <p class="nav-card-description">
+                        Marco normativo que establece los delitos y las penas aplicables en el ámbito federal de México. Tipificación de conductas y sanciones.
+                    </p>
+                    <span class="nav-card-tag mexico">México 🇲🇽</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Sección Hoja de Vida -->
+        <section class="profile-section">
+            <h2 class="nav-title">
+                <span>👤</span>
+                Hoja de Vida del Presentador
+            </h2>
+
+            <!-- Encabezado del perfil -->
+            <div class="profile-header">
+                <div class="profile-photo">👮</div>
+                <div class="profile-info">
+                    <h3 class="profile-name">[Nombre Completo]</h3>
+                    <div class="profile-rank">
+                        <span class="profile-rank-badge">⭐ [Rango Actual]</span>
+                        Policía Nacional de Colombia
+                    </div>
+                    <div class="profile-details">
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-icon">🎂</span>
+                            <div>
+                                <div class="profile-detail-label">Fecha de Nacimiento</div>
+                                <div class="profile-detail-value">[DD/MM/AAAA]</div>
+                            </div>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-icon">📍</span>
+                            <div>
+                                <div class="profile-detail-label">Lugar de Origen</div>
+                                <div class="profile-detail-value">[Ciudad, Departamento]</div>
+                            </div>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-icon">🎓</span>
+                            <div>
+                                <div class="profile-detail-label">Formación Académica</div>
+                                <div class="profile-detail-value">[Título / Institución]</div>
+                            </div>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-icon">📅</span>
+                            <div>
+                                <div class="profile-detail-label">Años de Servicio</div>
+                                <div class="profile-detail-value">[X] años</div>
+                            </div>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-icon">📧</span>
+                            <div>
+                                <div class="profile-detail-label">Correo Institucional</div>
+                                <div class="profile-detail-value">[correo@policia.gov.co]</div>
+                            </div>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-icon">🏢</span>
+                            <div>
+                                <div class="profile-detail-label">Unidad Actual</div>
+                                <div class="profile-detail-value">[Dirección / Unidad]</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rangos de Policía en Colombia -->
+            <div class="ranks-section">
+                <h3 class="ranks-title">
+                    <span>🎖️</span>
+                    Estructura de Rangos - Policía Nacional de Colombia
+                </h3>
+                <div class="ranks-grid">
+                    <!-- Oficiales Generales -->
+                    <div class="rank-card">
+                        <div class="rank-icon">⭐⭐⭐⭐</div>
+                        <div class="rank-name">General</div>
+                        <div class="rank-category">Oficial General</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="rank-icon">⭐⭐⭐</div>
+                        <div class="rank-name">Mayor General</div>
+                        <div class="rank-category">Oficial General</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="rank-icon">⭐⭐</div>
+                        <div class="rank-name">Brigadier General</div>
+                        <div class="rank-category">Oficial General</div>
+                    </div>
+                    <!-- Oficiales Superiores -->
+                    <div class="rank-card">
+                        <div class="rank-icon">🎖️🎖️🎖️</div>
+                        <div class="rank-name">Coronel</div>
+                        <div class="rank-category">Oficial Superior</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="rank-icon">🎖️🎖️</div>
+                        <div class="rank-name">Teniente Coronel</div>
+                        <div class="rank-category">Oficial Superior</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="rank-icon">🎖️</div>
+                        <div class="rank-name">Mayor</div>
+                        <div class="rank-category">Oficial Superior</div>
+                    </div>
+                    <!-- Oficiales Subalternos -->
+                    <div class="rank-card">
+                        <div class="rank-icon">🔷🔷🔷</div>
+                        <div class="rank-name">Capitán</div>
+                        <div class="rank-category">Oficial Subalterno</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="rank-icon">🔷🔷</div>
+                        <div class="rank-name">Teniente</div>
+                        <div class="rank-category">Oficial Subalterno</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="rank-icon">🔷</div>
+                        <div class="rank-name">Subteniente</div>
+                        <div class="rank-category">Oficial Subalterno</div>
+                    </div>
+                    <!-- Nivel Ejecutivo -->
+                    <div class="rank-card">
+                        <div class="rank-icon">🔶🔶🔶</div>
+                        <div class="rank-name">Comisario</div>
+                        <div class="rank-category">Nivel Ejecutivo</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="rank-icon">🔶🔶</div>
+                        <div class="rank-name">Subcomisario</div>
+                        <div class="rank-category">Nivel Ejecutivo</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="rank-icon">🔶</div>
+                        <div class="rank-name">Intendente</div>
+                        <div class="rank-category">Nivel Ejecutivo</div>
+                    </div>
+                    <!-- Suboficiales -->
+                    <div class="rank-card">
+                        <div class="rank-icon">🔸🔸🔸</div>
+                        <div class="rank-name">Subintendente</div>
+                        <div class="rank-category">Suboficial</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="rank-icon">🔸🔸</div>
+                        <div class="rank-name">Patrullero</div>
+                        <div class="rank-category">Suboficial</div>
+                    </div>
+                    <div class="rank-card">
+                        <div class="rank-icon">🔸</div>
+                        <div class="rank-name">Auxiliar de Policía</div>
+                        <div class="rank-category">Nivel Básico</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Línea del Tiempo -->
+            <div class="timeline-section">
+                <h3 class="timeline-title">
+                    <span>📅</span>
+                    Línea del Tiempo - Trayectoria Profesional
+                </h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">📌 [Año]</div>
+                        <div class="timeline-event">Ingreso a la Policía Nacional</div>
+                        <div class="timeline-description">Inicio de formación en [Escuela de Policía]</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">📌 [Año]</div>
+                        <div class="timeline-event">Graduación y Primer Rango</div>
+                        <div class="timeline-description">Asignación a [Unidad/Departamento]</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">📌 [Año]</div>
+                        <div class="timeline-event">Ascenso a [Rango]</div>
+                        <div class="timeline-description">Reconocimiento por [logro o mérito específico]</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">📌 [Año]</div>
+                        <div class="timeline-event">Especialización / Capacitación</div>
+                        <div class="timeline-description">Curso en [área específica: ciberdelincuencia, investigación criminal, etc.]</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">📌 [Año Actual]</div>
+                        <div class="timeline-event">Cargo Actual</div>
+                        <div class="timeline-description">Desempeño en [función actual] - Intercambio México-Colombia</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Habilidades y Competencias -->
+            <div class="skills-section">
+                <h3 class="skills-title">
+                    <span>💼</span>
+                    Competencias y Habilidades
+                </h3>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <div class="skill-category-title">
+                            <span>🔍</span> Investigación
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">🕵️</span>
+                            <span class="skill-name">Análisis Criminal</span>
+                            <div class="skill-level">
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">💻</span>
+                            <span class="skill-name">Ciberdelincuencia</span>
+                            <div class="skill-level">
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">📊</span>
+                            <span class="skill-name">Inteligencia Policial</span>
+                            <div class="skill-level">
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-category-title">
+                            <span>📚</span> Conocimientos Legales
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">⚖️</span>
+                            <span class="skill-name">Derecho Penal</span>
+                            <div class="skill-level">
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">🔐</span>
+                            <span class="skill-name">Protección de Datos</span>
+                            <div class="skill-level">
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">🌐</span>
+                            <span class="skill-name">Legislación Internacional</span>
+                            <div class="skill-level">
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot"></span>
+                                <span class="skill-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-category-title">
+                            <span>🤝</span> Habilidades Blandas
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">🎤</span>
+                            <span class="skill-name">Comunicación Efectiva</span>
+                            <div class="skill-level">
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">👥</span>
+                            <span class="skill-name">Trabajo en Equipo</span>
+                            <div class="skill-level">
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">🎯</span>
+                            <span class="skill-name">Liderazgo</span>
+                            <div class="skill-level">
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot filled"></span>
+                                <span class="skill-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-category-title">
+                            <span>🏅</span> Reconocimientos
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">🏆</span>
+                            <span class="skill-name">[Medalla / Condecoración]</span>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">📜</span>
+                            <span class="skill-name">[Certificación Especial]</span>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">🎗️</span>
+                            <span class="skill-name">[Reconocimiento Institucional]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>🏛️ Portal de consulta legislativa - Cooperación México - Colombia</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">© 2025 - Todos los derechos reservados</p>
+        </footer>
+    </div>
+</body>
+</html>
