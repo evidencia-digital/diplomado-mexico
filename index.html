@@ -49,26 +49,14 @@
         }
 
         .escudo {
-            position: fixed;
-            width: 180px;
+            width: 120px;
             height: auto;
-            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
             transition: transform 0.3s ease;
-            z-index: 100;
-            top: 50%;
-            transform: translateY(-50%);
         }
 
         .escudo:hover {
-            transform: translateY(-50%) scale(1.08);
-        }
-
-        .escudo-colombia {
-            left: 20px;
-        }
-
-        .escudo-mexico {
-            right: 20px;
+            transform: scale(1.05);
         }
 
         .header-content {
@@ -508,22 +496,80 @@
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         }
 
+        /* QR Section */
+        .qr-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .qr-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--color-primary);
+        }
+
+        .qr-info {
+            text-align: left;
+            max-width: 400px;
+        }
+
+        .qr-info h3 {
+            color: var(--color-primary);
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qr-info p {
+            color: var(--color-text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .qr-url {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--color-primary), #02a858);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .qr-url:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(1, 126, 68, 0.4);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             header {
+                flex-direction: column;
+                gap: 20px;
                 padding: 20px;
             }
 
             .escudo {
                 width: 80px;
-            }
-
-            .escudo-colombia {
-                left: 5px;
-            }
-
-            .escudo-mexico {
-                right: 5px;
             }
 
             .header-content h1 {
@@ -538,18 +584,13 @@
                 min-height: auto;
             }
 
-            .container {
-                padding: 20px 60px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .escudo {
-                width: 60px;
+            .qr-container {
+                flex-direction: column;
+                gap: 20px;
             }
 
-            .container {
-                padding: 15px 50px;
+            .qr-info {
+                text-align: center;
             }
         }
 
@@ -600,13 +641,10 @@
     </style>
 </head>
 <body>
-    <!-- Escudos fijos a los lados -->
-    <img src="Escudo_Policía_Nacional_de_Colombia.jpg" alt="Escudo Policía Nacional de Colombia" class="escudo escudo-colombia">
-    <img src="Escudo_Policía_Federal_2019.png" alt="Escudo Policía Federal México" class="escudo escudo-mexico">
-
     <div class="container">
-        <!-- Header -->
+        <!-- Header con escudos -->
         <header>
+            <img src="Escudo_Policía_Nacional_de_Colombia.jpg" alt="Escudo Policía Nacional de Colombia" class="escudo">
             <div class="header-content">
                 <h1>📚 Portal de Legislación</h1>
                 <p class="subtitle">Comparativa de Marco Jurídico México - Colombia</p>
@@ -615,6 +653,7 @@
                     <span class="flag">🇲🇽</span>
                 </div>
             </div>
+            <img src="Escudo_Policía_Federal_2019.png" alt="Escudo Policía Federal México" class="escudo">
         </header>
 
         <!-- Sección de Infografías Interactivas -->
@@ -983,6 +1022,23 @@
                             <span class="skill-name">[Reconocimiento Institucional]</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección QR Code -->
+        <section class="qr-section">
+            <h2 class="nav-title" style="justify-content: center;">
+                <span>📱</span>
+                Accede al Portal
+            </h2>
+            <div class="qr-container">
+                <img src="QR.svg" alt="Código QR para acceder al sitio" class="qr-code">
+                <div class="qr-info">
+                    <h3>🌐 Escanea y Visita</h3>
+                    <p>Escanea el código QR con tu dispositivo móvil para acceder directamente a este portal de legislación comparativa México - Colombia.</p>
+                    <p>También puedes compartir este código con colegas y compañeros interesados en el contenido.</p>
+                    <a href="https://evidencia-digital.github.io/diplomado-mexico/" class="qr-url" target="_blank">🔗 Visitar Sitio Web</a>
                 </div>
             </div>
         </section>
