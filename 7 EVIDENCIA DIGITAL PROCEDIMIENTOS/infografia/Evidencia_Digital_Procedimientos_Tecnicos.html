@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidencia Digital - Procedimientos Técnicos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #134252 0%, #2180A1 100%);
+            color: #134252;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .intro-card {
+            background: #FFFDF9;
+            border-left: 5px solid #32B8C6;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .intro-card h2 {
+            color: #2180A1;
+            margin-bottom: 15px;
+        }
+
+        .intro-card p {
+            color: #626C71;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 12px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-btn.active {
+            background: #32B8C6;
+            border-color: #32B8C6;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #FFFDF9;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 5px solid #2180A1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card.accent {
+            border-left-color: #32B8C6;
+        }
+
+        .card.warning {
+            border-left-color: #E67F61;
+        }
+
+        .card h3 {
+            color: #2180A1;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .card.accent h3 {
+            color: #32B8C6;
+        }
+
+        .card.warning h3 {
+            color: #E67F61;
+        }
+
+        .card p {
+            color: #626C71;
+            font-size: 0.95em;
+        }
+
+        .alert {
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid;
+        }
+
+        .alert.info {
+            background: #E8F7F9;
+            border-left-color: #32B8C6;
+            color: #134252;
+        }
+
+        .alert.warning {
+            background: #FEF3EF;
+            border-left-color: #E67F61;
+            color: #134252;
+        }
+
+        .alert h5 {
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #134252;
+        }
+
+        .alert p {
+            color: #134252;
+        }
+
+        .process-flow {
+            background: #FFFDF9;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .flow-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            align-items: flex-start;
+        }
+
+        .flow-number {
+            width: 40px;
+            height: 40px;
+            background: #2180A1;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            font-size: 1.1em;
+        }
+
+        .flow-content h4 {
+            color: #2180A1;
+            margin-bottom: 8px;
+        }
+
+        .flow-content p {
+            color: #626C71;
+            margin-bottom: 8px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: #2180A1;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            color: #134252;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(33, 128, 161, 0.05);
+        }
+
+        .pdf-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: #32B8C6;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(16,24,40,0.12);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .pdf-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(16,24,40,0.16);
+        }
+
+        .collapsible {
+            background: rgba(33, 128, 161, 0.1);
+            color: #2180A1;
+            cursor: pointer;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-weight: 600;
+            border-radius: 6px;
+            margin-top: 10px;
+            border-left: 4px solid #2180A1;
+            transition: 0.3s;
+        }
+
+        .collapsible:hover {
+            background: rgba(33, 128, 161, 0.2);
+        }
+
+        .content {
+            display: none;
+            padding: 0 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .content.show {
+            display: block;
+            max-height: 1000px;
+            padding: 15px;
+        }
+
+        .technique-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .technique-list li {
+            padding: 8px 0;
+            color: #134252;
+            border-bottom: 1px solid rgba(33, 128, 161, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 30px;
+            margin-top: 40px;
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            .tabs {
+                flex-direction: column;
+            }
+            .tab-btn {
+                min-width: 100%;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔒 Evidencia Digital y Prueba Electrónica</h1>
+            <p>Procedimientos Técnicos en Colombia</p>
+        </header>
+
+        <div class="intro-card">
+            <h2>¿Qué es la Evidencia Digital?</h2>
+            <p>La evidencia digital son mensajes de datos que tienen vocación a ser reconocidos como prueba de un hecho, acto o contrato realizado en entornos digitales. A diferencia de la evidencia física (compuesta de átomos), la evidencia digital se compone de lenguaje lógico binario que representa datos.</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab(event, 'resumen')">📊 Resumen General</button>
+            <button class="tab-btn" onclick="showTab(event, 'preservacion')">🛡️ Preservación</button>
+            <button class="tab-btn" onclick="showTab(event, 'autenticacion')">✅ Autenticación</button>
+            <button class="tab-btn" onclick="showTab(event, 'escenarios')">📱 Escenarios</button>
+            <button class="tab-btn" onclick="showTab(event, 'antiforense')">⚠️ Anti-forense</button>
+            <button class="tab-btn" onclick="showTab(event, 'casos')">📋 Casos</button>
+        </div>
+
+        <!-- TAB 0: RESUMEN GENERAL -->
+        <div id="resumen" class="tab-content active">
+            <div class="intro-card">
+                <h2>Resumen General - Manejo Correcto de Evidencia Digital</h2>
+                <p>Guía visual y conceptual de los procedimientos técnicos esenciales para la preservación y autenticación de la evidencia digital en procesos judiciales colombianos.</p>
+            </div>
+
+            <div style="background: #FFFDF9; padding: 25px; border-radius: 12px; margin-bottom: 30px; text-align: center;">
+                <img src="./img.png" alt="Manejo Correcto de Evidencia Digital" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            </div>
+
+            <div class="intro-card">
+                <h2>📌 Frases y Conceptos Clave del PDF</h2>
+            </div>
+
+            <div class="process-flow">
+                <h3 style="color: #2180A1; margin-bottom: 20px;">🔑 Definiciones Fundamentales</h3>
+                
+                <div class="flow-item">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h4>¿Qué es Evidencia Digital?</h4>
+                        <p><strong>"Mensajes de datos que tiene vocación a reconocerse como plena prueba de un hecho, acto o contrato que haya sido suscrito en entornos digitales"</strong></p>
+                        <p>A diferencia de la evidencia física (compuesta de átomos), <strong>la evidencia digital está compuesta de un lenguaje lógico binario que representa un dato.</strong></p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h4>Imagen Forense Digital</h4>
+                        <p><strong>"Copia exacta y a tamaño natural de todos los contenidos y de la estructura de un dispositivo de almacenamiento"</strong></p>
+                        <p>Se refiere al proceso mediante el cual se realiza una <strong>copia exacta del dispositivo donde reposa la información electrónicamente almacenada</strong> que llegará a tener vocación probatoria.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h4>Mensajes de Datos (MD)</h4>
+                        <p><strong>"Información generada, enviada, recibida, almacenada o comunicada por medios electrónicos, ópticos o similares"</strong></p>
+                        <p>Incluye EDI, Internet, correo electrónico, telegrama, télex o telefax (Artículo 2 Ley 527 de 1999 - Ley de Comercio Electrónico, Colombia)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-flow">
+                <h3 style="color: #2180A1; margin-bottom: 20px;">⚡ Principios Críticos de Procedimiento</h3>
+                
+                <div class="flow-item">
+                    <div class="flow-number">✓</div>
+                    <div class="flow-content">
+                        <h4>Misión de la Guía</h4>
+                        <p><strong>"Proporcionar herramientas de aprendizaje orientadas a potenciar los conocimientos, habilidades y destrezas para desempeñar de forma eficiente y eficaz sus funciones, mediante la realización de procesos de formación y capacitación, promoviendo su desarrollo integral para el mejoramiento de la Administración de Justicia."</strong></p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">✓</div>
+                    <div class="flow-content">
+                        <h4>Propósito de la Guía</h4>
+                        <p><strong>"Fomentar las competencias de los operadores judicales en fundamentos dogmáticos, técnicos y jurídicos necesarios para actualizarse en cuanto a tecnologías aplicadas a la administración de la justicia en Colombia."</strong></p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">✓</div>
+                    <div class="flow-content">
+                        <h4>Clarificación de Estándares Internacionales</h4>
+                        <p><strong>"Aclara las directrices de buenas prácticas jurídicas locales y estándares internacionales que procuren evitar cometer errores respecto a la valoración de la evidencia digital y la prueba electrónica"</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert info">
+                <h5>📘 Objetivos Específicos de la Capacitación</h5>
+                <ul class="technique-list">
+                    <li><strong>Apropiar</strong> Fundamentos legales y axiológicos de la EDiPE en el ámbito judicial.</li>
+                    <li><strong>Apropiar</strong> Instrumentos técnicos y jurídicos que permiten dar certeza al Juez respecto a la integridad de la evidencia digital tales como imagen forense, certificados digitales, estampas cronológicas, firmas digitales, algoritmos.</li>
+                    <li><strong>Capacitar</strong> en la aplicación de los Procedimientos Técnicos de Evidencia Digital y Prueba Electrónica en Colombia: incluyendo una Unidad sobre principios relacionados con el uso Ético Judicial de la EDiPE.</li>
+                </ul>
+            </div>
+
+            <div class="process-flow">
+                <h3 style="color: #2180A1; margin-bottom: 20px;">🎯 Criterios Jurisprudenciales Clave</h3>
+                
+                <div class="flow-item">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h4>Integralidad</h4>
+                        <p>El texto del documento transmitido por vía electrónica sea recibido en su integridad por el destinatario.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h4>Inalterabilidad</h4>
+                        <p>El documento generado por primera vez en su forma definitiva no sea modificado.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h4>Rastreabilidad</h4>
+                        <p>Posibilidad de acudir a la fuente original de creación o almacenamiento con miras a verificar su originalidad y autenticidad.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <h4>Recuperabilidad</h4>
+                        <p>Condición física por cuya virtud debe permanecer accesible para ulteriores consultas.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">5</div>
+                    <div class="flow-content">
+                        <h4>Conservación</h4>
+                        <p>Prevenir su pérdida, ya sea por deterioro de los soportes informáticos o por destrucción ocasionada por virus informáticos.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">6</div>
+                    <div class="flow-content">
+                        <h4>Autenticidad</h4>
+                        <p>Mecanismos tecnológicos que permiten identificar al autor y asociarlo con su contenido (Firma Digital, Certificado Digital).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert warning">
+                <h5>⚠️ Normas Aplicables en Colombia</h5>
+                <p><strong>Ley 527 de 1999:</strong> Ley de Comercio Electrónico - Base legal para documentos electrónicos</p>
+                <p><strong>Código Administrativo (Art. 216):</strong> "Será admisible la utilización de los medios electrónicos para efectos probatorios de conformidad con lo dispuesto en las normas que regulan la materia y en concordancia con las disposiciones de este código y las del código de procedimiento civil"</p>
+                <p><strong>Estándar ISO/IEC 27037:2012:</strong> Estándares internacionales para obtención y preservación de evidencia digital</p>
+            </div>
+
+            <div style="text-align:center; margin: 20px 0 30px;">
+                <a class="pdf-btn" href="../22_cartilla_evidencia_digital_-_procedimientos_teicnicos.pdf" target="_blank" rel="noopener noreferrer">📄 Abrir PDF - Cartilla Evidencia Digital (Procedimientos Técnicos)</a>
+            </div>
+
+        </div>
+
+        <!-- TAB 1: PRESERVACIÓN -->
+        <div id="preservacion" class="tab-content">
+            <div class="intro-card">
+                <h2>Etapa de Preservación - Imagen Forense</h2>
+                <p>La preservación es el primer paso crítico. Garantiza que la evidencia digital no sea alterada durante su recolección. El proceso requiere que el original nunca sea tocado directamente.</p>
+            </div>
+
+            <div class="process-flow">
+                <h3 style="color: #2180A1; margin-bottom: 25px;">⚙️ Proceso de Imagen Forense</h3>
+                
+                <div class="flow-item">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h4>Equipo de Origen ("Sospechoso")</h4>
+                        <p>Es el dispositivo (disco duro, USB, móvil) que contiene la información electrónica a recolectar. Este dispositivo NUNCA debe conectarse directamente a un computador sin protección.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h4>Bloqueador de Lecto/Escritura (Write Blocker)</h4>
+                        <p>Dispositivo de hardware que impide que el experto genere cambios en las fechas de acceso o modificación. Es FUNDAMENTAL para preservar la integridad de la prueba.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h4>Software de Digitalización</h4>
+                        <p>Programas especializados como FTK Imager o Encase® que realizan una copia exacta bit a bit de todos los contenidos, incluyendo datos eliminados.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <h4>Validación con Valor HASH</h4>
+                        <p>Se comparan valores criptográficos hash del original y la copia. Si coinciden exactamente, la imagen es idéntica.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card warning">
+                    <h3>❌ Mala Práctica Común</h3>
+                    <p>Conectar directamente un USB o disco sin bloqueador genera cambios automáticos en las fechas de acceso, alterando la integridad de la prueba.</p>
+                </div>
+
+                <div class="card accent">
+                    <h3>✨ Concepto Clave</h3>
+                    <p>Una imagen forense es una copia exacta bit a bit de todos los contenidos de un dispositivo, incluyendo datos aparentemente eliminados.</p>
+                </div>
+            </div>
+
+            <div class="alert info">
+                <h5>📘 Caso: Los Computadores de Raúl Reyes (2008)</h5>
+                <p>Autoridades colombianas incautaron computadores a las FARC. Se accedió directamente a 8 pruebas sin write blockers entre el 1-3 de marzo, dejando rastros en 48,055 archivos de sistema. INTERPOL documentó que el acceso a los datos no se ajustó a principios internacionales reconocidos para el tratamiento de pruebas electrónicas. Esta mala práctica fue evidencia de procedimiento incorrecto.</p>
+            </div>
+        </div>
+
+        <!-- TAB 2: AUTENTICACIÓN -->
+        <div id="autenticacion" class="tab-content">
+            <div class="intro-card">
+                <h2>Métodos de Autenticación del Mensaje de Datos</h2>
+                <p>Para que la evidencia digital sea aceptada en un proceso judicial, debe autenticarse mediante métodos científicos reconocidos internacionalmente que garanticen su integridad.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card accent">
+                    <h3>🔐 Certificados Digitales</h3>
+                    <p>Identificación exclusiva electrónica emitida por compañías de confianza. Utilizan criptografía de clave pública (una clave privada + una clave pública).</p>
+                    <button class="collapsible">Ver detalles</button>
+                    <div class="content">
+                        <p><strong>¿Cómo funciona?</strong></p>
+                        <p>El remitente cifra con su clave privada. El receptor descifra con la clave pública del remitente. Esto comprueba que el remitente es quien dice ser.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🧮 Valor HASH</h3>
+                    <p>Secuencia única de números y caracteres generada por algoritmos criptográficos. Representa exactamente el contenido de un archivo. Cualquier cambio genera un hash diferente.</p>
+                    <button class="collapsible">Ver detalles</button>
+                    <div class="content">
+                        <p><strong>Ejemplo SHA-1:</strong></p>
+                        <p>da39a3ee5e6b4b0d3255bfef95601890afd80709</p>
+                        <p>Si el archivo original y la copia tienen el MISMO hash, son idénticos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="process-flow">
+                <h3 style="color: #2180A1; margin-bottom: 20px;">Algoritmos Más Usados</h3>
+                
+                <table class="comparison-table">
+                    <tr>
+                        <th>Algoritmo</th>
+                        <th>Tipo</th>
+                        <th>Características</th>
+                    </tr>
+                    <tr>
+                        <td><strong>SHA-1</strong></td>
+                        <td>Hash Seguro</td>
+                        <td>160 bits, estándar internacional</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MD5</strong></td>
+                        <td>Resumen de Mensajes</td>
+                        <td>128 bits, ampliamente aceptado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SHA-256</strong></td>
+                        <td>Hash Seguro</td>
+                        <td>256 bits, cada vez más usado</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 3: ESCENARIOS -->
+        <div id="escenarios" class="tab-content">
+            <div class="intro-card">
+                <h2>Escenarios de Obtención de Mensajes de Datos</h2>
+                <p>Existen múltiples dispositivos y plataformas donde pueden encontrarse datos con valor probatorio.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>📱 Teléfonos Celulares</h3>
+                    <p>Dispositivo más común para evidencia digital. Desafíos: superar límites de seguridad (códigos, biometría), bloqueo y duplicación forense.</p>
+                </div>
+
+                <div class="card accent">
+                    <h3>⌚ Wearables</h3>
+                    <p>Dispositivos portátiles integrados (relojes deportivos, pulseras). Datos: geolocalización, salud, actividad física.</p>
+                </div>
+
+                <div class="card warning">
+                    <h3>🚁 Drones (RPAS)</h3>
+                    <p>Aeronaves pilotadas a distancia. Documentan: identificadores, medios (fotos/videos), telemetría (ubicación, ruta, altura).</p>
+                </div>
+
+                <div class="card">
+                    <h3>🏠 IoT (Internet de las Cosas)</h3>
+                    <p>Dispositivos interconectados (asistentes de voz). Generan BIG DATA masivo con datos sensibles de privacidad.</p>
+                </div>
+
+                <div class="card accent">
+                    <h3>💬 Mensajería Instantánea</h3>
+                    <p>WhatsApp, Telegram, etc. Desafío: mensajes pueden modificarse sin dejar rastro visible en análisis superficial.</p>
+                </div>
+
+                <div class="card warning">
+                    <h3>☁️ Evidencia en la Nube</h3>
+                    <p>Datos almacenados en servidores remotos. Desafío: pueden ubicarse en múltiples países, requiere solicitudes legales internacionales.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: TÉCNICAS ANTI-FORENSE -->
+        <div id="antiforense" class="tab-content">
+            <div class="intro-card">
+                <h2>Técnicas Anti-Forense: Lo Que Destruye la Evidencia</h2>
+                <p>Las técnicas anti-forense son métodos para ocultar, alterar o destruir evidencia digital.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card warning">
+                    <h3>🗑️ Borrado o Destrucción</h3>
+                    <p>Eliminación mediante software especializado. Parece permanente, pero datos eliminados pueden recuperarse del espacio libre.</p>
+                </div>
+
+                <div class="card warning">
+                    <h3>🔍 Ocultación</h3>
+                    <p>Esconder archivos usando atributos del sistema o particiones ocultas. Los datos siguen ahí pero no visibles.</p>
+                </div>
+
+                <div class="card warning">
+                    <h3>📝 Sobreescritura de Metadatos</h3>
+                    <p>Modificación de información sobre origen y fechas. Intenta borrar la línea de tiempo.</p>
+                </div>
+
+                <div class="card warning">
+                    <h3>🔒 Cifrado de Información</h3>
+                    <p>Encriptación de datos para hacerlos inaccesibles. Sin la clave, los datos quedan ilegibles.</p>
+                </div>
+            </div>
+
+            <div class="process-flow">
+                <h3 style="color: #2180A1; margin-bottom: 20px;">Línea de Tiempo - Obtención de Fechas</h3>
+                
+                <div class="flow-item">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h4>Fecha de Creación</h4>
+                        <p>Cuándo el archivo fue creado por primera vez. Si se copia, esta fecha se renueva.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h4>Fecha de Modificación</h4>
+                        <p>Última vez que fue modificado. SÍ se preserva al copiar (más confiable).</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h4>Fecha de Acceso</h4>
+                        <p>Última vez que fue accedido. Puede alterarse con herramientas especializadas (menos confiable).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: CASOS PRÁCTICOS -->
+        <div id="casos" class="tab-content">
+            <div class="intro-card">
+                <h2>Análisis de Casos Prácticos</h2>
+                <p>Casos reales que muestran la aplicación correcta e incorrecta de procedimientos técnicos.</p>
+            </div>
+
+            <div class="process-flow">
+                <h3 style="color: #2180A1; margin-bottom: 20px;">📋 Caso: Raúl Reyes - Mala Praxis Forense</h3>
+                
+                <div class="flow-item">
+                    <div class="flow-number">❌</div>
+                    <div class="flow-content">
+                        <h4>Lo que Sucedió</h4>
+                        <p>Entre 1-3 de marzo 2008: se accedió directamente a 8 pruebas sin write blockers. INTERPOL documentó 48,055 archivos con rastros de alteración en metadatos del sistema.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">✅</div>
+                    <div class="flow-content">
+                        <h4>El Estándar ISO/IEC 27037:2012</h4>
+                        <p>Establece que al incautar dispositivos: NUNCA encender sin medidas forenses, usar write blockers, preservar la cadena de custodia, documentar cada paso.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert warning">
+                <h5>🚨 Consecuencia Judicial</h5>
+                <p>Aunque INTERPOL confirmó que no hubo alteración de archivos de usuario, los rastros de acceso incorrecto comprometieron la confiabilidad de la prueba en el proceso.</p>
+            </div>
+
+            <div class="process-flow">
+                <h3 style="color: #2180A1; margin-bottom: 20px;">📋 Caso: Patit Corporation - Sextorsión Digital</h3>
+                
+                <div class="flow-item">
+                    <div class="flow-number">🔍</div>
+                    <div class="flow-content">
+                        <h4>La Situación</h4>
+                        <p>Empleado de servicio técnico accedió a videos/fotos comprometedoras durante reparación. Realizó extorsión usando WhatsApp. Se encontraron múltiples víctimas.</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">📱</div>
+                    <div class="flow-content">
+                        <h4>Evidencia Recolectada</h4>
+                        <p><strong>Computadora:</strong> Análisis forense de archivos multimedia | <strong>WhatsApp:</strong> Análisis forense con Cellebrite UFED | <strong>Bitcoin:</strong> Rastro de pagos de extorsión | <strong>Email:</strong> Comunicaciones alternativas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #FFFDF9; padding: 30px; border-radius: 12px; margin-top: 40px;">
+            <h2 style="color: #2180A1; margin-bottom: 20px;">🔗 Cadena de Custodia: Elemento Crítico</h2>
+            
+            <div class="grid-2">
+                <div class="card">
+                    <h3>📍 Sitio Exacto</h3>
+                    <p>Documentar precisamente dónde se encontró el dispositivo o mensaje de datos.</p>
+                </div>
+
+                <div class="card accent">
+                    <h3>👤 Persona Responsable</h3>
+                    <p>Identificar al funcionario responsable y su firma en cada etapa del proceso.</p>
+                </div>
+
+                <div class="card warning">
+                    <h3>🔄 Cambios Experimentados</h3>
+                    <p>Registrar cualquier alteración, movimiento o manejo durante transporte y almacenamiento.</p>
+                </div>
+
+                <div class="card">
+                    <h3>🏷️ Naturaleza del Elemento</h3>
+                    <p>Describir exactamente qué es: disco duro, USB, teléfono, etc., con modelos y números de serie.</p>
+                </div>
+            </div>
+
+            <div class="alert info">
+                <h5>📘 Principios Fundamentales</h5>
+                <ul class="technique-list">
+                    <li><strong>Integridad:</strong> No fue alterado</li>
+                    <li><strong>Autenticidad:</strong> Es exactamente lo que se encontró</li>
+                    <li><strong>Trazabilidad:</strong> Se puede rastrear quién lo manejó</li>
+                    <li><strong>Continuidad:</strong> Documentación desde recolección hasta fallo judicial</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>Guía de Aprendizaje Autodirigido en Evidencia Digital y Prueba Electrónica en Colombia</p>
+            <p>Procedimientos Técnicos - Escuela Judicial Rodrigo Lara Bonilla</p>
+        </footer>
+    </div>
+
+    <script>
+        function showTab(evt, tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        document.querySelectorAll('.collapsible').forEach(button => {
+            button.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.classList.toggle('show');
+            });
+        });
+    </script>
+</body>
+</html>
+
+    <!-- Back to index floating button -->
+    <a href="../../index.html" style="position:fixed;right:18px;bottom:18px;z-index:9999;display:inline-flex;align-items:center;padding:10px 14px;background:#32b8c6;color:#fff;border-radius:10px;text-decoration:none;font-weight:600;box-shadow:0 8px 24px rgba(16,24,40,0.12);">← Volver al índice</a>

@@ -97,6 +97,27 @@
             color: white;
         }
 
+        /* PDF button below tabs */
+        .pdf-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 14px auto 24px auto;
+            padding: 10px 16px;
+            background: #134252;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(19,66,82,0.12);
+            transition: transform 0.12s ease, box-shadow 0.12s ease;
+        }
+
+        .pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 26px rgba(19,66,82,0.14);
+        }
+
         .tab-content {
             display: none;
         }
@@ -603,6 +624,8 @@
             <button class="tab-btn" onclick="switchTab('impacto')">Impacto y Contexto</button>
         </div>
 
+        <!-- (PDF links moved into 'Resumen Visual' section) -->
+
         <!-- Tab: Resumen Visual -->
         <div id="resumen" class="tab-content active">
             <div class="section">
@@ -656,6 +679,14 @@
                         </div>
                     </div>
                 </div>
+
+                    <!-- PDF buttons for Resumen Visual -->
+                    <div style="text-align:center; margin-top:18px;">
+                        <a class="pdf-btn" href="../LEY OLIMPIA.pdf" target="_blank" rel="noopener noreferrer">📄 Abrir PDF (LEY OLIMPIA)</a>
+                        <a class="pdf-btn" href="../Ley_1273_de_2009.pdf" target="_blank" rel="noopener noreferrer" style="margin-left:10px;">📄 Ley 1273 de 2009</a>
+                        <a class="pdf-btn" href="../ley_1928_2018.pdf" target="_blank" rel="noopener noreferrer" style="margin-left:10px;">📄 Ley 1928 de 2018</a>
+                    </div>
+
             </div>
         </div>
 
@@ -1224,3 +1255,6 @@
     </script>
 </body>
 </html>
+
+    <!-- Back to index floating button -->
+    <a href="../../index.html" style="position:fixed;right:18px;bottom:18px;z-index:9999;display:inline-flex;align-items:center;padding:10px 14px;background:#2180A1;color:#fff;border-radius:10px;text-decoration:none;font-weight:600;box-shadow:0 8px 24px rgba(16,24,40,0.12);">← Volver al índice</a>

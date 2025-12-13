@@ -78,6 +78,42 @@
             animation: slideUp 0.8s ease-out;
         }
 
+            /* Back to index button */
+            .back-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 12px;
+                background: var(--color-primary);
+                color: #fff;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 600;
+                box-shadow: 0 6px 18px rgba(16,24,40,0.12);
+                transition: transform .12s ease, box-shadow .12s ease;
+                margin-bottom: 18px;
+            }
+
+            .back-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(16,24,40,0.18); }
+
+            /* PDF button style */
+            .pdf-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 14px;
+                background: var(--color-primary);
+                color: #fff;
+                border-radius: 10px;
+                text-decoration: none;
+                font-weight: 700;
+                box-shadow: 0 8px 24px rgba(50,184,198,0.14);
+                transition: transform 0.12s ease, box-shadow 0.12s ease;
+                margin-top: 18px;
+            }
+
+            .pdf-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(50,184,198,0.18); }
+
         .nav-tab {
             padding: 12px 24px;
             background: var(--color-surface);
@@ -509,6 +545,11 @@
                         <p>Se cumple la pena o medida de seguridad impuesta en colonias penitenciarias.</p>
                     </div>
                 </div>
+            </div>
+
+            <!-- PDF button: abrir en nueva pestaña -->
+            <div style="text-align:center;">
+                <a class="pdf-btn" href="../CODIGO PENAL FEDERAL.pdf" target="_blank" rel="noopener noreferrer">📄 Abrir PDF - Código Penal Federal</a>
             </div>
         </div>
 
@@ -1007,3 +1048,6 @@
     </script>
 </body>
 </html>
+
+    <!-- Back to index floating button -->
+    <a href="../../index.html" style="position:fixed;right:18px;bottom:18px;z-index:9999;display:inline-flex;align-items:center;padding:10px 14px;background:#32b8c6;color:#fff;border-radius:10px;text-decoration:none;font-weight:600;box-shadow:0 8px 24px rgba(16,24,40,0.12);">← Volver al índice</a>

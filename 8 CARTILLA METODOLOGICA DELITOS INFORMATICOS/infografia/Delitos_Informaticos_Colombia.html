@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delitos Informáticos - Guía Interactiva</title>
+    <style>
+        :root {
+            --color-primary: #32b8c6;
+            --color-primary-dark: #1d7480;
+            --color-bg: #f5f5f5;
+            --color-surface: #ffffff;
+            --color-text: #1a1a1a;
+            --color-text-light: #666;
+            --color-danger: #ff5459;
+            --color-warning: #e68161;
+            --color-success: #32b8c6;
+            --color-info: #627077;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--color-text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: slideUp 0.8s ease;
+        }
+
+        .nav-tabs button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-tabs button:hover,
+        .nav-tabs button.active {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--color-surface);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 5px solid var(--color-primary);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .card.danger {
+            border-left-color: var(--color-danger);
+        }
+
+        .card.warning {
+            border-left-color: var(--color-warning);
+        }
+
+        .card.success {
+            border-left-color: var(--color-success);
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--color-text);
+        }
+
+        .card-subtitle {
+            font-size: 0.85em;
+            color: var(--color-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-description {
+            color: var(--color-text-light);
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        .modes-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .mode-tag {
+            background: rgba(50, 184, 198, 0.1);
+            color: var(--color-primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .actors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .actor-card {
+            background: var(--color-surface);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 4px solid var(--color-primary);
+        }
+
+        .actor-icon {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+        }
+
+        .actor-name {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--color-text);
+        }
+
+        .actor-description {
+            font-size: 0.9em;
+            color: var(--color-text-light);
+            line-height: 1.5;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, rgba(50, 184, 198, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+            border-left: 4px solid var(--color-primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .definition-term {
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .definition-text {
+            color: var(--color-text-light);
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        /* Improved definitions section: solid surface background, shadow and
+           darker body text to ensure readability over the page gradient. */
+        .definitions-section {
+            background: var(--color-surface);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid var(--color-primary);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            color: var(--color-text);
+        }
+
+        .definitions-section h3 {
+            color: var(--color-primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .definitions-section p {
+            color: #334155; /* slightly darker than --color-text-light */
+        }
+
+        /* Back to index button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--color-primary);
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(16,24,40,0.12);
+            transition: transform .12s ease, box-shadow .12s ease;
+            margin-bottom: 18px;
+        }
+
+        .back-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(16,24,40,0.18); }
+
+        .pdf-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: var(--color-primary);
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(16,24,40,0.12);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .pdf-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(16,24,40,0.16); }
+
+        .stats-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--color-surface);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--color-text-light);
+            font-size: 0.95em;
+        }
+
+        .route-timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            background: var(--color-surface);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            width: 12px;
+            height: 12px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            top: 30px;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--color-primary);
+        }
+
+        .timeline-item:first-child::before {
+            content: '1';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.7em;
+        }
+
+        .timeline-step {
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        .timeline-description {
+            color: var(--color-text-light);
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            background: var(--color-surface);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .contact-channels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .channel {
+            padding: 20px;
+            background: rgba(50, 184, 198, 0.05);
+            border-radius: 8px;
+            border: 2px solid var(--color-primary);
+        }
+
+        .channel-title {
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+
+        .channel-items {
+            font-size: 0.95em;
+            color: var(--color-text-light);
+            line-height: 2;
+        }
+
+        .channel-items strong {
+            color: var(--color-text);
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            opacity: 0.9;
+        }
+
+        .highlight {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .nav-tabs {
+                gap: 8px;
+            }
+
+            .nav-tabs button {
+                padding: 10px 16px;
+                font-size: 0.85em;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ Delitos Informáticos</h1>
+            <p>Guía Interactiva de la Fiscalía General de la Nación</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" data-tab="resumen">Resumen General</button>
+            <button class="tab-btn" data-tab="delitos">Delitos</button>
+            <button class="tab-btn" data-tab="modalidades">Modalidades</button>
+            <button class="tab-btn" data-tab="actores">Actores</button>
+            <button class="tab-btn" data-tab="ruta">Ruta de Atención</button>
+            <button class="tab-btn" data-tab="contacto">Contacto</button>
+        </div>
+
+        <!-- SECCIÓN: RESUMEN GENERAL -->
+        <div id="resumen" class="content-section active">
+            <div style="background: var(--color-surface); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                <img src="./img.png" alt="Infografía de Delitos Informáticos" style="width: 100%; height: auto; display: block;">
+            </div>
+
+            <div class="stats-box">
+                <div class="stat-card">
+                    <div class="stat-number">9</div>
+                    <div class="stat-label">Tipos de Delitos<br>Ley 1273</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">28+</div>
+                    <div class="stat-label">Técnicas de Ataque<br>Identificadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Líneas de Atención<br>Disponibles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Canales de<br>Denuncia</div>
+                </div>
+            </div>
+
+            <div style="background: var(--color-surface); padding: 30px; border-radius: 12px; margin-bottom: 30px;">
+                <h3 style="color: var(--color-primary); margin-bottom: 20px; font-size: 1.3em;">📋 Puntos Clave de la Cartilla Metodológica</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div style="border-left: 4px solid var(--color-primary); padding: 15px; background: rgba(50, 184, 198, 0.05); border-radius: 8px;">
+                        <h4 style="color: var(--color-primary); margin-bottom: 10px;">🎯 Objetivo de la Guía</h4>
+                        <p style="color: var(--color-text-light); font-size: 0.95em; line-height: 1.6;">Unificar conceptos sobre delitos informáticos y orientar a servidores de la Fiscalía General de la Nación y funcionarios de policía judicial en la correcta recepción de denuncias y tratamiento del cibercrimen.</p>
+                    </div>
+
+                    <div style="border-left: 4px solid var(--color-warning); padding: 15px; background: rgba(230, 129, 97, 0.05); border-radius: 8px;">
+                        <h4 style="color: var(--color-warning); margin-bottom: 10px;">⚠️ Problemática Identificada</h4>
+                        <p style="color: var(--color-text-light); font-size: 0.95em; line-height: 1.6;">Aumento significativo en denuncias ciudadanas por afectación a la información y datos, consecuencia del creciente uso de tecnologías de información y comunicaciones en la vida cotidiana.</p>
+                    </div>
+
+                    <div style="border-left: 4px solid var(--color-success); padding: 15px; background: rgba(50, 184, 198, 0.05); border-radius: 8px;">
+                        <h4 style="color: var(--color-success); margin-bottom: 10px;">🛡️ Bien Jurídico Tutelado</h4>
+                        <p style="color: var(--color-text-light); font-size: 0.95em; line-height: 1.6;">Protección de la información, datos personales y sistemas informáticos. Tipificados bajo la Ley 1273 de 2009 (Convenio Budapest 2001).</p>
+                    </div>
+
+                    <div style="border-left: 4px solid var(--color-danger); padding: 15px; background: rgba(255, 84, 89, 0.05); border-radius: 8px;">
+                        <h4 style="color: var(--color-danger); margin-bottom: 10px;">📊 Alcance de la Cartilla</h4>
+                        <p style="color: var(--color-text-light); font-size: 0.95em; line-height: 1.6;">Dirigida a servidores de Fiscalía y funcionarios de policía judicial de la Policía Nacional encargados del ingreso, registro y análisis de noticias criminales sobre delitos informáticos.</p>
+                    </div>
+
+                    <div style="border-left: 4px solid #764ba2; padding: 15px; background: rgba(118, 75, 162, 0.05); border-radius: 8px;">
+                        <h4 style="color: #764ba2; margin-bottom: 10px;">⚖️ Marco Legal Aplicable</h4>
+                        <p style="color: var(--color-text-light); font-size: 0.95em; line-height: 1.6;">Constitucion Política Art. 15 • Ley 599/2000 • Ley 906/2005 • Ley 1273/2009 • Ley 1908/2018 • Convenio Budapest 2001</p>
+                    </div>
+
+                    <div style="border-left: 4px solid #e68161; padding: 15px; background: rgba(230, 129, 97, 0.05); border-radius: 8px;">
+                        <h4 style="color: #e68161; margin-bottom: 10px;">🌍 Cooperación Internacional</h4>
+                        <p style="color: var(--color-text-light); font-size: 0.95em; line-height: 1.6;">Acuerdos con Europol (acceso a SIENA), Interpol, Ameripol. Colombia es único país de Latinoamérica con acuerdo EUROPOL desde 2012.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="definitions-section">
+                <h3>📌 Definiciones Fundamentales</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div>
+                        <p style="font-weight: 700; color: var(--color-text); margin-bottom: 5px;">Modalidad</p>
+                        <p style="color: var(--color-text-light); font-size: 0.9em;">Manera o método utilizado para cometer el delito, involucrando la relación entre entorno, víctima y victimario.</p>
+                    </div>
+                    <div>
+                        <p style="font-weight: 700; color: var(--color-text); margin-bottom: 5px;">Modo</p>
+                        <p style="color: var(--color-text-light); font-size: 0.9em;">Herramienta, elemento o mecanismo utilizado por el delincuente para cometer el delito (técnica específica).</p>
+                    </div>
+                    <div>
+                        <p style="font-weight: 700; color: var(--color-text); margin-bottom: 5px;">Víctima</p>
+                        <p style="color: var(--color-text-light); font-size: 0.9em;">Persona a la cual se le afecta el bien jurídico tutelado de la protección de información y datos.</p>
+                    </div>
+                    <div>
+                        <p style="font-weight: 700; color: var(--color-text); margin-bottom: 5px;">Usuario</p>
+                        <p style="color: var(--color-text-light); font-size: 0.9em;">Persona natural o jurídica que requiere un servicio de justicia (no necesariamente es víctima).</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align:center; margin: 20px 0 30px;">
+                <a class="pdf-btn" href="../Cartilla-Metodologica-de-Atencion-de-Delitos-Informaticos.pdf" target="_blank" rel="noopener noreferrer">📄 Abrir PDF - Cartilla Metodológica Delitos Informáticos</a>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: DELITOS -->
+        <div id="delitos" class="content-section">
+            <div class="grid">
+                <div class="card danger">
+                    <div class="card-subtitle">Art. 269A</div>
+                    <div class="card-title">Acceso Abusivo a Sistema</div>
+                    <div class="card-description">Acceder sin autorización a un sistema informático protegido o mantenerse dentro del mismo contra la voluntad del propietario.</div>
+                    <div class="modes-list">
+                        <span class="mode-tag">Ingeniería Social</span>
+                        <span class="mode-tag">Phishing</span>
+                        <span class="mode-tag">Malware</span>
+                    </div>
+                </div>
+
+                <div class="card warning">
+                    <div class="card-subtitle">Art. 269B</div>
+                    <div class="card-title">Obstaculización de Sistema</div>
+                    <div class="card-description">Bloquear u obstaculizar el funcionamiento de un sistema informático, red de telecomunicaciones o datos allí contenidos.</div>
+                    <div class="modes-list">
+                        <span class="mode-tag">Ransomware</span>
+                        <span class="mode-tag">DoS/DDoS</span>
+                        <span class="mode-tag">Botnet</span>
+                    </div>
+                </div>
+
+                <div class="card danger">
+                    <div class="card-subtitle">Art. 269C</div>
+                    <div class="card-title">Interceptación de Datos</div>
+                    <div class="card-description">Interceptar datos informáticos en su origen, destino o dentro de un sistema sin orden judicial previa.</div>
+                    <div class="modes-list">
+                        <span class="mode-tag">Man in the Middle</span>
+                        <span class="mode-tag">Sniffer</span>
+                        <span class="mode-tag">Trojanos</span>
+                    </div>
+                </div>
+
+                <div class="card danger">
+                    <div class="card-subtitle">Art. 269D</div>
+                    <div class="card-title">Daño Informático</div>
+                    <div class="card-description">Destruir, dañar, borrar o alterar datos informáticos, sistemas o componentes lógicos sin autorización.</div>
+                    <div class="modes-list">
+                        <span class="mode-tag">Defacement</span>
+                        <span class="mode-tag">Malware</span>
+                        <span class="mode-tag">SQL Injection</span>
+                    </div>
+                </div>
+
+                <div class="card warning">
+                    <div class="card-subtitle">Art. 269E</div>
+                    <div class="card-title">Uso de Software Malicioso</div>
+                    <div class="card-description">Producir, distribuir, vender o enviar software malicioso que cause daño o capture información fraudulentamente.</div>
+                    <div class="modes-list">
+                        <span class="mode-tag">Malware</span>
+                        <span class="mode-tag">Gusanos</span>
+                        <span class="mode-tag">Keylogger</span>
+                    </div>
+                </div>
+
+                <div class="card danger">
+                    <div class="card-subtitle">Art. 269F</div>
+                    <div class="card-title">Violación de Datos Personales</div>
+                    <div class="card-description">Obtener, compilar, sustraer, vender u divulgar datos personales sin autorización.</div>
+                    <div class="modes-list">
+                        <span class="mode-tag">Ingeniería Social</span>
+                        <span class="mode-tag">Phishing</span>
+                        <span class="mode-tag">Hacking</span>
+                    </div>
+                </div>
+
+                <div class="card warning">
+                    <div class="card-subtitle">Art. 269G</div>
+                    <div class="card-title">Suplantación de Sitios Web</div>
+                    <div class="card-description">Diseñar, desarrollar o enviar páginas falsas para capturar datos personales o modificar el sistema DNS.</div>
+                    <div class="modes-list">
+                        <span class="mode-tag">Phishing</span>
+                        <span class="mode-tag">DNS Hijacking</span>
+                        <span class="mode-tag">Spoofing</span>
+                    </div>
+                </div>
+
+                <div class="card danger">
+                    <div class="card-subtitle">Art. 269I</div>
+                    <div class="card-title">Hurto por Medios Informáticos</div>
+                    <div class="card-description">Apoderarse de bienes superando medidas de seguridad informáticas o suplantando a un usuario.</div>
+                    <div class="modes-list">
+                        <span class="mode-tag">Carding</span>
+                        <span class="mode-tag">SIM Swap</span>
+                        <span class="mode-tag">Insider</span>
+                    </div>
+                </div>
+
+                <div class="card warning">
+                    <div class="card-subtitle">Art. 269J</div>
+                    <div class="card-title">Transferencia No Consentida</div>
+                    <div class="card-description">Conseguir la transferencia de activos sin consentimiento mediante manipulación informática o artificio.</div>
+                    <div class="modes-list">
+                        <span class="mode-tag">BEC</span>
+                        <span class="mode-tag">Phishing</span>
+                        <span class="mode-tag">Malware</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: MODALIDADES Y MODOS -->
+        <div id="modalidades" class="content-section">
+            <h2 style="color: white; margin-bottom: 30px; text-align: center;">Modalidades y Técnicas de Ataque</h2>
+            
+            <div style="background: var(--color-surface); padding: 30px; border-radius: 12px; margin-bottom: 30px;">
+                <div class="definition-box">
+                    <div class="definition-term">🎯 Ingeniería Social</div>
+                    <div class="definition-text">Manipulación de usuarios legítimos para obtener información confidencial o acceso a sistemas. Técnica que explota la confianza humana más que las vulnerabilidades tecnológicas.</div>
+                </div>
+
+                <div class="definition-box">
+                    <div class="definition-term">📧 Phishing / BEC</div>
+                    <div class="definition-text">Técnica de engaño mediante correos electrónicos falsificados que contienen enlaces maliciosos o suplantación de identidad para robar credenciales o información financiera.</div>
+                </div>
+
+                <div class="definition-box">
+                    <div class="definition-term">🦠 Malware</div>
+                    <div class="definition-text">Software malicioso diseñado para infiltrarse en dispositivos, capturar información o dañar sistemas. Incluye virus, troyanos, ransomware, gusanos y keyloggers.</div>
+                </div>
+
+                <div class="definition-box">
+                    <div class="definition-term">💳 Fraudes de Tarjeta</div>
+                    <div class="definition-text"><strong>Skimming:</strong> Copia de banda magnética | <strong>Shimmer:</strong> Robo del chip | <strong>Carding:</strong> Uso no autorizado | <strong>Cambiazo:</strong> Sustitución de tarjeta</div>
+                </div>
+
+                <div class="definition-box">
+                    <div class="definition-term">☎️ Vishing / Smishing</div>
+                    <div class="definition-text">Engaños mediante llamadas telefónicas o mensajes de texto (SMS) para obtener información sensible.</div>
+                </div>
+
+                <div class="definition-box">
+                    <div class="definition-term">🔄 DoS / DDoS</div>
+                    <div class="definition-text">Ataques de denegación de servicio. DoS desde un dispositivo, DDoS desde múltiples fuentes para sobrecargar y bloquear servidores.</div>
+                </div>
+
+                <div class="definition-box">
+                    <div class="definition-term">🔐 Man in the Middle (MitM)</div>
+                    <div class="definition-text">Interceptación de comunicaciones asumiendo rol de intermediario. El atacante ve y modifica la información sin ser detectado.</div>
+                </div>
+
+                <div class="definition-box">
+                    <div class="definition-term">💰 Ransomware</div>
+                    <div class="definition-text">Malware que cifra datos o bloquea el sistema exigiendo "rescate" para restaurar el acceso. Método de extorsión digital.</div>
+                </div>
+
+                <div class="definition-box">
+                    <div class="definition-term">🎭 SIM Swap</div>
+                    <div class="definition-text">Fraude donde el atacante convence a operadores de telefonía para transferir el número de teléfono de la víctima a una nueva SIM.</div>
+                </div>
+
+                <div class="definition-box">
+                    <div class="definition-term">👤 Insider (Atacante Interno)</div>
+                    <div class="definition-text">Ataque realizado por personas que pertenecen a la organización afectada. Presenta riesgos de fraudes, robos y sabotajes internos.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: ACTORES -->
+        <div id="actores" class="content-section">
+            <h2 style="color: white; margin-bottom: 30px; text-align: center;">Actores y Roles en la Investigación</h2>
+            
+            <div class="actors-grid">
+                <div class="actor-card">
+                    <div class="actor-icon">⚖️</div>
+                    <div class="actor-name">Fiscal</div>
+                    <div class="actor-description">Director de la investigación. Responsable de la dirección, coordinación y control jurídico de las actividades.</div>
+                </div>
+
+                <div class="actor-card">
+                    <div class="actor-icon">🚨</div>
+                    <div class="actor-name">Policía Judicial</div>
+                    <div class="actor-description">Funcionarios que apoyan la investigación penal, recopilan evidencia y ejecutan actos urgentes.</div>
+                </div>
+
+                <div class="actor-card">
+                    <div class="actor-icon">🔬</div>
+                    <div class="actor-name">Peritos Informáticos</div>
+                    <div class="actor-description">Expertos en forense digital. Descubren, recolectan, analizan y custodian evidencia digital.</div>
+                </div>
+
+                <div class="actor-card">
+                    <div class="actor-icon">🛡️</div>
+                    <div class="actor-name">Víctima</div>
+                    <div class="actor-description">Persona a la cual se le afecta el bien jurídico tutelado "de la protección de la información y datos".</div>
+                </div>
+
+                <div class="actor-card">
+                    <div class="actor-icon">📋</div>
+                    <div class="actor-name">Usuario / Denunciante</div>
+                    <div class="actor-description">Persona natural o jurídica que requiere un servicio de justicia. No necesariamente es víctima.</div>
+                </div>
+
+                <div class="actor-card">
+                    <div class="actor-icon">📊</div>
+                    <div class="actor-name">Programa Metodológico</div>
+                    <div class="actor-description">Herramienta que define objetivos, hipótesis delictiva y plan de trabajo investigativo.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: RUTA DE ATENCIÓN -->
+        <div id="ruta" class="content-section">
+            <h2 style="color: white; margin-bottom: 30px; text-align: center;">Ruta de Atención del Delito</h2>
+            
+            <div class="route-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-step">1️⃣ Presentar Denuncia</div>
+                    <div class="timeline-description">La víctima puede denunciar por múltiples canales: presencial (CAF, Casas de Justicia), virtual (ADenunciar, correo electrónico), telefónica (122 o 018000919748) o escrita.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-step">2️⃣ Recepción de Denuncia</div>
+                    <div class="timeline-description">Funcionarios de atención ciudadana recepciona el hecho denunciado y registra la información en los sistemas de la Fiscalía General de la Nación.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-step">3️⃣ Actos Urgentes</div>
+                    <div class="timeline-description">Policía Judicial realiza inspecciones, entrevistas, interrogatorios y preserva elementos de prueba dentro de 36 horas, bajo cadena de custodia.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-step">4️⃣ Programa Metodológico</div>
+                    <div class="timeline-description">Fiscal y Policía Judicial se reúnen para definir objetivos, hipótesis delictiva y plan de trabajo investigativo detallado.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-step">5️⃣ Investigación Especializada</div>
+                    <div class="timeline-description">Se despliegan actividades como interceptación de comunicaciones, búsqueda en bases de datos, análisis de evidencia digital y operaciones encubiertas virtuales.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-step">6️⃣ Análisis Forense Digital</div>
+                    <div class="timeline-description">Peritos informáticos extraen, analizan y documentan la evidencia digital obtenida, manteniendo cadena de custodia.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-step">7️⃣ Cierre de Investigación</div>
+                    <div class="timeline-description">Fiscal formaliza investigación, presenta cargos si hay evidencia suficiente o cierra el caso.</div>
+                </div>
+            </div>
+
+            <div style="background: var(--color-surface); padding: 20px; border-radius: 12px; margin-top: 30px;">
+                <h3 style="margin-bottom: 15px; color: var(--color-primary);">Herramientas Investigativas Disponibles</h3>
+                <ul style="color: var(--color-text-light); line-height: 2;">
+                    <li>✓ Interceptación de comunicaciones (con orden judicial)</li>
+                    <li>✓ Búsqueda selectiva en bases de datos</li>
+                    <li>✓ Conservación y preservación de información en Internet</li>
+                    <li>✓ Cooperación judicial internacional (Europol, Interpol)</li>
+                    <li>✓ Ciberpatrullaje en redes públicas</li>
+                    <li>✓ Operaciones encubiertas virtuales</li>
+                    <li>✓ Análisis forense digital avanzado</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: CONTACTO -->
+        <div id="contacto" class="content-section">
+            <h2 style="color: white; margin-bottom: 30px; text-align: center;">Canales de Contacto y Denuncia</h2>
+            
+            <div class="contact-section">
+                <h3 style="color: var(--color-primary); margin-bottom: 15px;">🚨 Líneas de Atención 24/7</h3>
+                <div style="background: rgba(50, 184, 198, 0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <div style="font-size: 1.2em; font-weight: 700; color: var(--color-danger); margin-bottom: 10px;">☎️ Desde celular: 122</div>
+                    <div style="font-size: 1.2em; font-weight: 700; color: var(--color-danger);">📞 Línea gratuita: 018000919748</div>
+                </div>
+
+                <h3 style="color: var(--color-primary); margin-bottom: 15px; margin-top: 30px;">Canales de Denuncia</h3>
+                <div class="contact-channels">
+                    <div class="channel">
+                        <div class="channel-title">📍 Presencial</div>
+                        <div class="channel-items">
+                            <div><strong>CAF:</strong> Centros de Atención</div>
+                            <div><strong>PAF:</strong> Puntos de Atención</div>
+                            <div><strong>Casas de Justicia</strong></div>
+                            <div><strong>Estaciones de Policía</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="channel">
+                        <div class="channel-title">💻 Virtual</div>
+                        <div class="channel-items">
+                            <div><strong>ADenunciar:</strong> Sistema nacional</div>
+                            <div><strong>Web:</strong> www.fiscalia.gov.co</div>
+                            <div><strong>Correo:</strong> ges.documentalpqrs@fiscalia.gov.co</div>
+                            <div><strong>Videollamada</strong> en lengua de señas</div>
+                        </div>
+                    </div>
+
+                    <div class="channel">
+                        <div class="channel-title">📱 Móvil</div>
+                        <div class="channel-items">
+                            <div><strong>Centro de contacto</strong> - Información</div>
+                            <div><strong>Líneas telefónicas</strong> - Orientación</div>
+                            <div><strong>Clic to call</strong> - Videollamada</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--color-primary); margin-bottom: 15px; margin-top: 30px;">📋 Información Requerida en la Denuncia</h3>
+                <div style="background: rgba(230, 129, 97, 0.1); padding: 20px; border-radius: 8px;">
+                    <ul style="color: var(--color-text); line-height: 2; list-style-position: inside;">
+                        <li>Descripción detallada de los hechos</li>
+                        <li>Fecha, hora y lugar del evento</li>
+                        <li>Identificación de la víctima</li>
+                        <li>Datos del presunto autor (si se conoce)</li>
+                        <li>Sistemas informáticos afectados</li>
+                        <li>Datos perdidos o comprometidos</li>
+                        <li>Evidencia disponible (screenshots, logs, etc.)</li>
+                        <li>Testigos o personas que conozcan los hechos</li>
+                    </ul>
+                </div>
+
+                <h3 style="color: var(--color-primary); margin-bottom: 15px; margin-top: 30px;">🤝 Cooperación Internacional</h3>
+                <div style="color: var(--color-text-light); line-height: 1.8;">
+                    <p><strong style="color: var(--color-text);">Europol:</strong> Agencia de la Unión Europea. Colombia tiene acuerdo desde 2012 como único país de Latinoamérica con acceso a SIENA.</p>
+                    <p style="margin-top: 10px;"><strong style="color: var(--color-text);">Interpol:</strong> Centro Cibernético Policial de Colombia mantiene cooperación operativa.</p>
+                    <p style="margin-top: 10px;"><strong style="color: var(--color-text);">Ameripol:</strong> Integración regional para lucha contra cibercrimen.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>📚 Cartilla Metodológica de Atención de Delitos Informáticos</p>
+        <p style="font-size: 0.9em; margin-top: 10px;">Fiscalía General de la Nación | Policía Nacional de Colombia</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                
+                // Remover clase active de todos los botones y secciones
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+                
+                // Añadir clase active al botón y sección clickeados
+                this.classList.add('active');
+                document.getElementById(tabName).classList.add('active');
+            });
+        });
+
+        // Efecto de scroll suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+    <!-- Back to index floating button -->
+    <a href="../../index.html" style="position:fixed;right:18px;bottom:18px;z-index:9999;display:inline-flex;align-items:center;padding:10px 14px;background:#32b8c6;color:#fff;border-radius:10px;text-decoration:none;font-weight:600;box-shadow:0 8px 24px rgba(16,24,40,0.12);">← Volver al índice</a>
