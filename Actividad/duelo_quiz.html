@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duelo: Delitos Informáticos México y Colombia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2E7D32 0%, #1565C0 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        /* Initial Setup */
+        .setup-container {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .setup-container.hidden {
+            display: none;
+        }
+
+        .setup-container h2 {
+            margin-bottom: 30px;
+            color: #2E7D32;
+        }
+
+        .players-input {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .player-input {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-input label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .player-input input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .player-input input:focus {
+            outline: none;
+            border-color: #2E7D32;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #2E7D32 0%, #1565C0 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Game Container */
+        .game-container {
+            display: none;
+            padding: 20px;
+        }
+
+        .game-container.active {
+            display: block;
+        }
+
+        /* Scoreboard */
+        .scoreboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .player-score {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .player-score.player1 {
+            background: linear-gradient(135deg, #c41e3a 0%, #e74c3c 100%);
+        }
+
+        .player-score.player2 {
+            background: linear-gradient(135deg, #003087 0%, #1565C0 100%);
+        }
+
+        .player-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .player-points {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        /* Question Container */
+        .question-section {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2E7D32 0%, #1565C0 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .question-number {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .country-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 10px;
+            color: white;
+        }
+
+        .badge-mexico {
+            background: #c41e3a;
+        }
+
+        .badge-colombia {
+            background: #003087;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 0; /* allow children to shrink properly */
+        }
+
+        .option-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .option-label.player1 {
+            color: #c41e3a;
+        }
+
+        .option-label.player2 {
+            color: #003087;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            text-align: left;
+            word-wrap: break-word;
+            white-space: normal;
+            min-width: 0; /* prevent overflow in flex/grid */
+        }
+
+        .option:hover {
+            border-color: #2E7D32;
+            background: #f0f7f4;
+        }
+
+        .option.selected {
+            border-color: #2E7D32;
+            background: #d4edda;
+            font-weight: bold;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .option input[type="radio"] {
+            margin: 4px 0 0 0;
+            cursor: pointer;
+            flex: 0 0 auto;
+        }
+
+        /* Feedback */
+        .feedback-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .feedback-section.show {
+            display: block;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .feedback-text {
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Next Button */
+        .btn-next {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #2E7D32 0%, #1565C0 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: none;
+        }
+
+        .btn-next.show {
+            display: block;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Results */
+        .results-container {
+            display: none;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .results-container.active {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #2E7D32;
+        }
+
+        .winner-section {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .winner-badge {
+            font-size: 3em;
+            margin: 10px 0;
+        }
+
+        .winner-name {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .final-scores {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .final-score-card {
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .final-score-card.player1 {
+            background: linear-gradient(135deg, #c41e3a 0%, #e74c3c 100%);
+        }
+
+        .final-score-card.player2 {
+            background: linear-gradient(135deg, #003087 0%, #1565C0 100%);
+        }
+
+        .final-score-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .final-score-points {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .players-input,
+            .options-grid,
+            .final-scores {
+                grid-template-columns: 1fr;
+            }
+
+            .question {
+                font-size: 1.1em;
+            }
+
+            .option-label {
+                margin-top: 15px;
+            }
+
+            .option-label:first-of-type {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>⚔️ Duelo de Campeones</h1>
+            <p>Delitos Informáticos: México y Colombia</p>
+        </div>
+
+        <!-- Setup Phase -->
+        <div class="setup-container" id="setupContainer">
+            <h2>Ingresa los nombres de los jugadores</h2>
+            <div class="players-input">
+                <div class="player-input">
+                    <label>🇲🇽 Jugador 1:</label>
+                    <input type="text" id="player1Name" placeholder="Nombre del jugador 1" value="Jugador 1">
+                </div>
+                <div class="player-input">
+                    <label>🇨🇴 Jugador 2:</label>
+                    <input type="text" id="player2Name" placeholder="Nombre del jugador 2" value="Jugador 2">
+                </div>
+            </div>
+            <button class="btn-start" onclick="startGame()">Iniciar Duelo →</button>
+        </div>
+
+        <!-- Game Phase -->
+        <div class="game-container" id="gameContainer">
+            <!-- Scoreboard -->
+            <div class="scoreboard">
+                <div class="player-score player1">
+                    <div class="player-name" id="score1Name">Jugador 1</div>
+                    <div class="player-points" id="score1Points">0</div>
+                </div>
+                <div class="player-score player2">
+                    <div class="player-name" id="score2Name">Jugador 2</div>
+                    <div class="player-points" id="score2Points">0</div>
+                </div>
+            </div>
+
+            <!-- Question Section -->
+            <div class="question-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="question-number" id="questionNumber"></div>
+                <div class="question" id="question"></div>
+            </div>
+
+            <!-- Options -->
+            <div class="options-grid">
+                <div class="option-section">
+                    <div class="option-label player1" id="player1Label">Respuesta Jugador 1</div>
+                    <div id="player1Options"></div>
+                </div>
+                <div class="option-section">
+                    <div class="option-label player2" id="player2Label">Respuesta Jugador 2</div>
+                    <div id="player2Options"></div>
+                </div>
+            </div>
+
+            <!-- Feedback -->
+            <div class="feedback-section" id="feedbackSection">
+                <div class="feedback-title" id="feedbackTitle"></div>
+                <div class="feedback-text" id="feedbackText"></div>
+            </div>
+
+            <!-- Next Button -->
+            <button class="btn-next" id="nextBtn" onclick="nextQuestion()">Siguiente Pregunta →</button>
+        </div>
+
+        <!-- Results Phase -->
+        <div class="results-container" id="resultsContainer">
+            <h2 class="results-title">🎉 ¡Duelo Finalizado!</h2>
+            
+            <div class="winner-section" id="winnerSection"></div>
+
+            <div class="final-scores">
+                <div class="final-score-card player1">
+                    <div class="final-score-name" id="finalName1">Jugador 1</div>
+                    <div class="final-score-points" id="finalScore1">0</div>
+                </div>
+                <div class="final-score-card player2">
+                    <div class="final-score-name" id="finalName2">Jugador 2</div>
+                    <div class="final-score-points" id="finalScore2">0</div>
+                </div>
+            </div>
+
+            <button class="btn-reset" onclick="resetGame()">Jugar de Nuevo →</button>
+        </div>
+    </div>
+
+    <script>
+        // Base Quiz Data
+        const allQuestions = {
+            mexico: [
+                {
+                    question: "¿En qué año se aprobó la Ley Olimpia en Puebla, México?",
+                    options: ["2018", "2020", "2021", "2019"],
+                    correct: 3,
+                    explanation: "La Ley Olimpia se aprobó en Puebla en 2019 como respuesta a la violencia sexual digital.",
+                    country: "mexico"
+                },
+                {
+                    question: "¿Cuál es el nombre oficial de la Ley Olimpia?",
+                    options: ["Ley Federal de Protección contra Violencia Sexual", "Ley de Acceso no Autorizado a Sistemas", "Reforma al Código Penal Federal", "Ley de Ciberdelincuencia"],
+                    correct: 0,
+                    explanation: "Su nombre oficial es 'Ley Federal de Protección contra la Violencia Sexual', conocida como Ley Olimpia.",
+                    country: "mexico"
+                },
+                {
+                    question: "¿Cuál es el delito de 'Suplantación de Identidad' según la Ley Olimpia?",
+                    options: ["Obtener información privada", "Acceder sin autorización a redes", "Hacerse pasar por otra persona en redes", "Interceptar comunicaciones"],
+                    correct: 2,
+                    explanation: "La suplantación es cuando alguien se hace pasar por otra persona en plataformas digitales.",
+                    country: "mexico"
+                },
+                {
+                    question: "¿Cuántos años de cárcel pueden imponerse por difusión de contenido íntimo sin consentimiento?",
+                    options: ["3-6 años", "1-3 años", "6-12 años", "Hasta 2 años"],
+                    correct: 0,
+                    explanation: "La Ley Olimpia establece penas de 3 a 6 años por difusión no consentida de contenido privado.",
+                    country: "mexico"
+                },
+                {
+                    question: "¿La Ley Olimpia protege principalmente a...?",
+                    options: ["Los deportistas", "La privacidad e intimidad digital", "La infraestructura de telecomunicaciones", "Los derechos de autor online"],
+                    correct: 1,
+                    explanation: "La Ley Olimpia protege la privacidad e intimidad de las personas en espacios digitales, especialmente contra violencia sexual digital.",
+                    country: "mexico"
+                },
+                {
+                    question: "¿Cuál es la pena por extorsión digital según la Ley Olimpia?",
+                    options: ["1-3 años", "3-8 años", "Multa solamente", "Sin cárcel, solo indemnización"],
+                    correct: 1,
+                    explanation: "La extorsión digital tiene penas de 3 a 8 años de cárcel más multas económicas según la gravedad.",
+                    country: "mexico"
+                },
+                {
+                    question: "¿Cuál es el delito de 'Obtención No Consentida de Imágenes Íntimas'?",
+                    options: ["Fotografiar a personas públicas", "Capturar imágenes privadas sin permiso", "Tomar fotos en lugares públicos", "Guardar fotos de redes sociales"],
+                    correct: 1,
+                    explanation: "Es la captura de imágenes o videos íntimos sin consentimiento, usando cualquier medio (cámara oculta, etc.).",
+                    country: "mexico"
+                },
+                {
+                    question: "¿La Ley Olimpia contempla protección para menores de edad?",
+                    options: ["No, solo protege a mayores", "Sí, con medidas especiales para menores", "Solo menores de 12 años", "No está especificado"],
+                    correct: 1,
+                    explanation: "La Ley Olimpia tiene disposiciones especiales para proteger a menores de edad con penas aumentadas.",
+                    country: "mexico"
+                },
+                {
+                    question: "¿Qué organismo es responsable de investigar delitos según la Ley Olimpia en México?",
+                    options: ["Solo la Policía Local", "Fiscalía General de la República (FGR)", "Policía Cibernética únicamente", "INAI"],
+                    correct: 1,
+                    explanation: "La Fiscalía General de la República es responsable de investigar delitos según la Ley Olimpia.",
+                    country: "mexico"
+                },
+                {
+                    question: "¿Cuál es la diferencia entre 'Difusión' y 'Suplantación' en la Ley Olimpia?",
+                    options: ["No hay diferencia", "Difusión es compartir contenido; suplantación es hacerse pasar por otro", "Son lo mismo con otro nombre", "Difusión es legal, suplantación no"],
+                    correct: 1,
+                    explanation: "Difusión es compartir contenido íntimo sin consentimiento; suplantación es crear perfiles falsos o hacerse pasar por otra persona.",
+                    country: "mexico"
+                },
+                {
+                    question: "¿Qué delito tipifica la Ley Olimpia como 'Chantaje Sexual Digital'?",
+                    options: ["Enviar mensajes amenazantes", "Amenazar con difundir contenido para extorsionar", "Hackear una cuenta", "Crear perfiles falsos"],
+                    correct: 1,
+                    explanation: "La sextorsión es amenazar con difundir contenido íntimo para obtener dinero, favores u otros beneficios.",
+                    country: "mexico"
+                },
+                {
+                    question: "¿Cuál es la pena por crear o distribuir malware según la Ley Olimpia?",
+                    options: ["1-2 años", "2-5 años", "5-10 años", "1-3 años"],
+                    correct: 2,
+                    explanation: "Crear o distribuir software malicioso puede castigarse con penas severas según la gravedad en México.",
+                    country: "mexico"
+                }
+            ],
+            colombia: [
+                {
+                    question: "¿En qué año se aprobó la Ley 1273 de 2009 en Colombia?",
+                    options: ["2008", "2009", "2010", "2011"],
+                    correct: 1,
+                    explanation: "La Ley 1273 de 2009 fue aprobada en 2009 como primera ley sobre delitos informáticos en Colombia.",
+                    country: "colombia"
+                },
+                {
+                    question: "¿Cuál es el artículo principal que tipifica el acceso no autorizado en la Ley 1273?",
+                    options: ["Art. 268", "Art. 269A", "Art. 300", "Art. 265"],
+                    correct: 1,
+                    explanation: "El artículo 269A tipifica el acceso no autorizado a sistemas informáticos según la Ley 1273.",
+                    country: "colombia"
+                },
+                {
+                    question: "¿Cuántos años de cárcel se establecen por acceso no autorizado a sistemas en Colombia?",
+                    options: ["1-3 años", "2-4 años", "4-8 años", "Hasta 2 años"],
+                    correct: 0,
+                    explanation: "Según la Ley 1273, el acceso no autorizado puede castigarse con 1 a 3 años de cárcel.",
+                    country: "colombia"
+                },
+                {
+                    question: "¿Qué es la 'Interceptación' según la Ley 1273?",
+                    options: ["Bloquear un dispositivo", "Capturar sin autorización datos en transmisión", "Eliminar archivos", "Cambiar contraseñas"],
+                    correct: 1,
+                    explanation: "La interceptación es la captura sin autorización de datos que se transmiten a través de sistemas.",
+                    country: "colombia"
+                },
+                {
+                    question: "¿Cuál es la pena por difusión de datos privados en Colombia según la Ley 1273?",
+                    options: ["1-3 años", "2-4 años", "4-8 años", "Multa únicamente"],
+                    correct: 0,
+                    explanation: "La Ley 1273 establece penas de 1 a 3 años por divulgación de información protegida.",
+                    country: "colombia"
+                },
+                {
+                    question: "¿En qué año se aprobó la Ley 1928 de 2018 en Colombia?",
+                    options: ["2016", "2017", "2018", "2019"],
+                    correct: 2,
+                    explanation: "La Ley 1928 de 2018 aprueba el Convenio sobre la Ciberdelincuencia de Budapest (2001).",
+                    country: "colombia"
+                },
+                {
+                    question: "¿Cuál es el propósito principal de la Ley 1928 de 2018?",
+                    options: ["Crear nuevos delitos", "Ratificar el Convenio de Budapest sobre ciberdelincuencia", "Reemplazar la Ley 1273", "Proteger solo empresas"],
+                    correct: 1,
+                    explanation: "La Ley 1928 ratifica el Convenio de Budapest para cooperación internacional en ciberdelincuencia.",
+                    country: "colombia"
+                },
+                {
+                    question: "¿Qué delito tipifica la Ley 1273 como 'Daño Malicioso'?",
+                    options: ["Enviar mensajes amenazantes", "Destruir o alterar datos sin autorización", "Acceso a sistemas", "Creación de malware únicamente"],
+                    correct: 1,
+                    explanation: "El daño malicioso es destruir, deteriorar, inutilizar o alterar datos sin autorización (Art. 269B).",
+                    country: "colombia"
+                },
+                {
+                    question: "¿Cuál es la pena por crear o distribuir malware según la Ley 1273?",
+                    options: ["1-2 años", "2-5 años", "5-10 años", "1-3 años"],
+                    correct: 1,
+                    explanation: "Crear o distribuir software malicioso puede castigarse con 2 a 5 años según la gravedad (Art. 269C).",
+                    country: "colombia"
+                },
+                {
+                    question: "¿La Ley 1273 protege el derecho a la privacidad en línea?",
+                    options: ["No, solo protege sistemas", "Sí, tipifica delitos contra la privacidad", "Solo protege empresas", "No está claro"],
+                    correct: 1,
+                    explanation: "La Ley 1273 tipifica varios delitos que protegen la privacidad e intimidad digital.",
+                    country: "colombia"
+                },
+                {
+                    question: "¿Qué organismo en Colombia es responsable de investigar delitos informáticos?",
+                    options: ["Solo la Policía", "Fiscalía, Policía Judicial y Cuerpo Técnico de Investigación", "Solo DIJIN", "Ministerio de TIC"],
+                    correct: 1,
+                    explanation: "Múltiples organismos investigan: Fiscalía General, Policía Judicial y Cuerpo Técnico de Investigación.",
+                    country: "colombia"
+                },
+                {
+                    question: "¿La Ley 1273 contempla sanciones para empleados que roban datos empresariales?",
+                    options: ["No aplica a empleados", "Sí, con penas aumentadas", "Solo multas", "No está definido"],
+                    correct: 1,
+                    explanation: "La Ley 1273 contempla sanciones especiales para empleados o personas con acceso autorizado que roben datos.",
+                    country: "colombia"
+                }
+            ]
+        };
+
+        // Función para obtener 10 preguntas aleatorias
+        function getRandomQuestions() {
+            const mexicoQuestions = [...allQuestions.mexico].sort(() => Math.random() - 0.5).slice(0, 5);
+            const colombiaQuestions = [...allQuestions.colombia].sort(() => Math.random() - 0.5).slice(0, 5);
+            return [...mexicoQuestions, ...colombiaQuestions].sort(() => Math.random() - 0.5);
+        }
+
+        // Game Variables
+        let questions = [];
+        let currentIndex = 0;
+        let player1Score = 0;
+        let player2Score = 0;
+        let player1Answer = null;
+        let player2Answer = null;
+        let bothAnswered = false;
+
+        // Start Game
+        function startGame() {
+            const p1Name = document.getElementById('player1Name').value || 'Jugador 1';
+            const p2Name = document.getElementById('player2Name').value || 'Jugador 2';
+
+            document.getElementById('score1Name').textContent = p1Name;
+            document.getElementById('score2Name').textContent = p2Name;
+            document.getElementById('player1Label').textContent = p1Name;
+            document.getElementById('player2Label').textContent = p2Name;
+            document.getElementById('finalName1').textContent = p1Name;
+            document.getElementById('finalName2').textContent = p2Name;
+
+            questions = getRandomQuestions();
+            player1Score = 0;
+            player2Score = 0;
+            currentIndex = 0;
+            bothAnswered = false;
+
+            document.getElementById('setupContainer').classList.add('hidden');
+            document.getElementById('gameContainer').classList.add('active');
+
+            loadQuestion();
+        }
+
+        // Load Question
+        function loadQuestion() {
+            if (currentIndex >= questions.length) {
+                endGame();
+                return;
+            }
+
+            const question = questions[currentIndex];
+            player1Answer = null;
+            player2Answer = null;
+            bothAnswered = false;
+
+            // Update progress
+            const progress = ((currentIndex + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('questionNumber').textContent = `Pregunta ${currentIndex + 1} de ${questions.length}`;
+
+            // Display question
+            let questionText = question.question;
+            if (question.country === 'mexico') {
+                questionText += ' <span class="country-badge badge-mexico">🇲🇽 México</span>';
+            } else {
+                questionText += ' <span class="country-badge badge-colombia">🇨🇴 Colombia</span>';
+            }
+            document.getElementById('question').innerHTML = questionText;
+
+            // Display options for both players (use separate radio groups so selections don't interfere)
+            const optionsHTML1 = question.options.map((option, index) => `
+                <label class="option">
+                    <input type="radio" name="answer1" value="${index}">
+                    <span class="option-text">${option}</span>
+                </label>
+            `).join('');
+
+            const optionsHTML2 = question.options.map((option, index) => `
+                <label class="option">
+                    <input type="radio" name="answer2" value="${index}">
+                    <span class="option-text">${option}</span>
+                </label>
+            `).join('');
+
+            document.getElementById('player1Options').innerHTML = optionsHTML1;
+            document.getElementById('player2Options').innerHTML = optionsHTML2;
+
+            // Add event listeners
+            document.querySelectorAll('#player1Options input').forEach(input => {
+                input.addEventListener('change', (e) => selectAnswer(1, parseInt(e.target.value)));
+            });
+
+            document.querySelectorAll('#player2Options input').forEach(input => {
+                input.addEventListener('change', (e) => selectAnswer(2, parseInt(e.target.value)));
+            });
+
+            document.getElementById('feedbackSection').classList.remove('show');
+            document.getElementById('nextBtn').classList.remove('show');
+        }
+
+        // Select Answer
+        function selectAnswer(player, answerIndex) {
+            if (player === 1) {
+                player1Answer = answerIndex;
+            } else {
+                player2Answer = answerIndex;
+            }
+
+            checkIfBothAnswered();
+        }
+
+        // Check if both players answered
+        function checkIfBothAnswered() {
+            if (player1Answer !== null && player2Answer !== null) {
+                bothAnswered = true;
+                showResults();
+            }
+        }
+
+        // Show Results
+        function showResults() {
+            const question = questions[currentIndex];
+            const p1Correct = player1Answer === question.correct;
+            const p2Correct = player2Answer === question.correct;
+
+            // Update scores
+            if (p1Correct) player1Score++;
+            if (p2Correct) player2Score++;
+
+            // Update UI
+            document.getElementById('score1Points').textContent = player1Score;
+            document.getElementById('score2Points').textContent = player2Score;
+
+            // Highlight correct/incorrect
+            document.querySelectorAll('#player1Options .option').forEach((opt, i) => {
+                opt.classList.add('disabled');
+                const inp = opt.querySelector('input');
+                if (inp) inp.disabled = true;
+                if (i === question.correct) {
+                    opt.classList.add('correct');
+                } else if (i === player1Answer && !p1Correct) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            document.querySelectorAll('#player2Options .option').forEach((opt, i) => {
+                opt.classList.add('disabled');
+                const inp = opt.querySelector('input');
+                if (inp) inp.disabled = true;
+                if (i === question.correct) {
+                    opt.classList.add('correct');
+                } else if (i === player2Answer && !p2Correct) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            // Show feedback
+            const feedback = document.getElementById('feedbackSection');
+            feedback.classList.add('show');
+            document.getElementById('feedbackTitle').textContent = '💡 Explicación:';
+            document.getElementById('feedbackText').textContent = question.explanation;
+
+            document.getElementById('nextBtn').classList.add('show');
+        }
+
+        // Next Question
+        function nextQuestion() {
+            currentIndex++;
+            loadQuestion();
+        }
+
+        // End Game
+        function endGame() {
+            document.getElementById('gameContainer').classList.remove('active');
+            document.getElementById('resultsContainer').classList.add('active');
+
+            document.getElementById('finalScore1').textContent = player1Score;
+            document.getElementById('finalScore2').textContent = player2Score;
+
+            // Determine winner
+            const name1 = document.getElementById('score1Name').textContent;
+            const name2 = document.getElementById('score2Name').textContent;
+            let winnerHTML = '';
+
+            if (player1Score > player2Score) {
+                winnerHTML = `
+                    <div class="winner-badge">🏆</div>
+                    <div class="winner-name">${name1} es el Ganador!</div>
+                    <div style="font-size: 1.1em; margin-top: 10px;">Ganó con ${player1Score} puntos vs ${player2Score}</div>
+                `;
+            } else if (player2Score > player1Score) {
+                winnerHTML = `
+                    <div class="winner-badge">🏆</div>
+                    <div class="winner-name">${name2} es el Ganador!</div>
+                    <div style="font-size: 1.1em; margin-top: 10px;">Ganó con ${player2Score} puntos vs ${player1Score}</div>
+                `;
+            } else {
+                winnerHTML = `
+                    <div class="winner-badge">🤝</div>
+                    <div class="winner-name">¡Empate!</div>
+                    <div style="font-size: 1.1em; margin-top: 10px;">Ambos ganaron con ${player1Score} puntos</div>
+                `;
+            }
+
+            document.getElementById('winnerSection').innerHTML = winnerHTML;
+        }
+
+        // Reset Game
+        function resetGame() {
+            document.getElementById('setupContainer').classList.remove('hidden');
+            document.getElementById('gameContainer').classList.remove('active');
+            document.getElementById('resultsContainer').classList.remove('active');
+
+            document.getElementById('player1Name').value = 'Jugador 1';
+            document.getElementById('player2Name').value = 'Jugador 2';
+
+            player1Score = 0;
+            player2Score = 0;
+            currentIndex = 0;
+            player1Answer = null;
+            player2Answer = null;
+        }
+    </script>
+</body>
+</html>
